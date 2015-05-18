@@ -11,4 +11,3 @@ GET     /vassets/*file              controllers.Assets.versioned(path="/public",
 GET     /webjars/*file              controllers.WebJarAssets.at(file)
 
 
-POST    

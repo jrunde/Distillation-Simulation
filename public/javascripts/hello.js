@@ -1,4 +1,4 @@
-//function loadXMLDoc() {
+/*//function loadXMLDoc() {
 
     var xmlhttp;
     
@@ -17,4 +17,4 @@
     
     xmlhttp.open("POST", "routes.conf", true);
     xmlhttp.send();
-//}
+//}*/

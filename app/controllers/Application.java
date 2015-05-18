@@ -8,10 +8,8 @@ import views.html.*;
 import play.api.libs.json.*;
 
 public class Application extends Controller {
-
-	static MatlabController mat = new MatlabController();
 	
     public static Result index() {
-        return ok(index.render(mat.getMsg()));
+        return ok(index.render("Yo"));
     }
 }
