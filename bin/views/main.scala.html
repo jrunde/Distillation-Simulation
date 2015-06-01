@@ -1,4 +1,8 @@
-@(title: String)(content: Html)
+@(form: Form[Application.Simulation])
+
+@helper.javascriptRouter("jsRoutes")(
+    routes.javascript.Application.simulate
+)
 
 <!DOCTYPE html>
 
@@ -7,9 +11,13 @@
         <title>@title</title>
         <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
         <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
-        <script src="@routes.Assets.at("javascripts/hello.js")" type="text/javascript"></script>
+        <script type="text/javascript" src="@routes.Application.javascriptRoutes()"></script>
     </head>
     <body>
-        @content
+		<div style="width:30%">
+			<div>
+				<canvas id="canvas" height="450" width="600"></canvas>
+			</div>
+		</div>
     </body>
 </html>

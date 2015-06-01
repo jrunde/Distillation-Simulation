@@ -1,4 +1,4 @@
-@(message: String)
+@(message:String)
 
 <link rel='stylesheet' href='@routes.WebJarAssets.at(WebJarAssets.locate("css/bootstrap.min.css"))'>
 <script type='text/javascript' src='@routes.WebJarAssets.at(WebJarAssets.locate("jquery.min.js"))'></script>
@@ -7,13 +7,8 @@
     @Html(org.webjars.RequireJS.getSetupJavaScript(routes.WebJarAssets.at("").url))
 </script>
 
-<script src="@routes.WebJarAssets.at(WebJarAssets.locate("require.min.js"))"></script>
+<script data-main="@routes.Assets.at("javascripts/application.js")" src="@routes.WebJarAssets.at(WebJarAssets.locate("require.min.js"))"></script>
 
-@main("Welcome to Play") {
-
-    <h1>@message</h1>
-
+@main("Distillation Simulation") {
+    
 }
-
-
-
