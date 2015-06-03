@@ -4,8 +4,22 @@
  * main.scala.html.
  *
  */
+require.config({
+    paths: {
+        'datatables': '/assets/javascripts/dataTables',
+        'gridster': '/assets/javascripts/gridster',
+        'gridster-collision': '/assets/javascripts/collision',
+        'gridster-draggable': '/assets/javascripts/draggable',
+        'gridster-coords': '/assets/javascripts/coords',
+        'gridster-utils': '/assets/javascripts/utils',
+    }
+});
 
-require(['/assets/javascripts/chart.js', '/assets/javascripts/dynatable.js', '/assets/javascripts/json.js'], function(Chart){
+require(['/assets/javascripts/chart.js',
+        '/assets/javascripts/json.js',
+        'datatables',
+        'gridster',
+    ], function(Chart){
  
     /**
      * Makes an ajax call.
@@ -131,7 +145,7 @@ require(['/assets/javascripts/chart.js', '/assets/javascripts/dynatable.js', '/a
      *
      */
     $(function() {
-      
+    
         launch();
     });
     
@@ -157,11 +171,25 @@ require(['/assets/javascripts/chart.js', '/assets/javascripts/dynatable.js', '/a
             addCompound();
         });*/
         
-        // Configure the sample compounds dynatable
-        //$('#sample-compounds').dynatable();
+        // Configure the sample compounds datatable
+        $('#sample-compounds').dataTable({
+            'paging': false,
+            'searching':false,
+        });
         
         // Configure the selected compounds dynatable
-        //$('#selected-compounds').dynatable();
+        $('#selected-compounds').dataTable({
+            'ordering': false,
+            'paging': false,
+            'searching':false,
+        });
+        
+        // Configure the layout grid
+        $(".gridster ul").gridster({
+            autogrow_cols: true,
+            widget_margins: [20, 20],
+            widget_base_dimensions: [600, 300]
+        });
     }
 
     /**

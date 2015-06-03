@@ -5,11 +5,10 @@
 <html>
     <head>
         <title>@title</title>
-        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/dynatable.css")">
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/dataTables.css")">
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/gridster.css")">
         <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
         <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
-        
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
         
         <!-- Embedded Javascript Router -->
         @helper.javascriptRouter("jsRoutes")(
@@ -17,130 +16,131 @@
             routes.javascript.Application.ajaxCall
         )
         
-        <script type="text/javascript" src="@routes.Assets.at("javascripts/jquery-1.7.1.js")"></script>
-        <script type="text/javascript" src="@routes.Assets.at("javascripts/jquery-play-1.7.1.js")"></script>
     </head>
     <body>
-        <table id="sample-compounds">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Boiling Point (K)</th>
-                    <th>Molecular Weight (g)</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Butene</td>
-                    <td>267</td>
-                    <td>56.11</td>
-                </tr>
-                <tr>
-                    <td>Hexene</td>
-                    <td>336</td>
-                    <td>84.16</td>
-                </tr>
-                <tr>
-                    <td>Methyl Pentanoate</td>
-                    <td>399</td>
-                    <td>116.16</td>
-                </tr>
-                <tr>
-                    <td>Ethyl Levulinate</td>
-                    <td>479</td>
-                    <td>144.17</td>
-                </tr>
-            </tbody>
-        </table>
-        <br/>
-        <br/>
-        <br/>
-        <table id="selected-compounds">
-            <thead>
-                <tr>
-                    <th>Percentage</th>
-                    <th>Name</th>
-                    <th>Boiling Point</th>
-                    <th>Molecular Weight</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>
-                        <form>
-                            <input type="text" id="pct1">
-                        </form>
-                    </td>
-                    <td>
-                        <select id="comp1">
-                            <option value="none">---</option>
-                            <option value="butene">Butene</option>
-                            <option value="hexene">Hexene</option>
-                            <option value="methyl_pentanoate">Methyl Pentanoate</option>
-                            <option value="ethyl_levulinate">Ethyl Levulinate</option>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <form>
-                            <input type="text" id="pct2">
-                        </form>
-                    </td>
-                    <td>
-                        <select id="comp2">
-                            <option value="none">---</option>
-                            <option value="butene">Butene</option>
-                            <option value="hexene">Hexene</option>
-                            <option value="methyl_pentanoate">Methyl Pentanoate</option>
-                            <option value="ethyl_levulinate">Ethyl Levulinate</option>
-                        </select>
-                    </td>
-                </tr>
-                </tr>
-                    <td>
-                        <form>
-                            <input type="text" id="pct3">
-                        </form>
-                    </td>
-                    <td>
-                        <select id="comp3">
-                            <option value="none">---</option>
-                            <option value="butene">Butene</option>
-                            <option value="hexene">Hexene</option>
-                            <option value="methyl_pentanoate">Methyl Pentanoate</option>
-                            <option value="ethyl_levulinate">Ethyl Levulinate</option>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <form>
-                            <input type="text" id="pct4">
-                        </form>
-                    </td>
-                    <td>
-                        <select id="comp4">
-                            <option value="none">---</option>
-                            <option value="butene">Butene</option>
-                            <option value="hexene">Hexene</option>
-                            <option value="methyl_pentanoate">Methyl Pentanoate</option>
-                            <option value="ethyl_levulinate">Ethyl Levulinate</option>
-                        </select>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <br/>
-        <br/>
-        <button type="button" id="simulate">Run</button>
-        <br/>
-        <br/>
-        <br/>
-		<div style="width:50%">
-			<div>
-				<canvas id="canvas" height="600" width="600"></canvas>
-			</div>
-		</div>
+        <div class="gridster">
+            <ul>
+                <li data-row="1" data-col="1" data-sizex="1" data-sizey="2">
+		            <div style="width:100%">
+			            <div>
+			            	<canvas id="canvas" height="600" width="600"></canvas>
+			            </div>
+		            </div>
+                </li>
+                <li data-row="1" data-col="2" data-sizex="1" data-sizey="1">
+                    <table id="sample-compounds">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Boiling Point (K)</th>
+                                <th>Molecular Weight (g)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Butene</td>
+                                <td>267</td>
+                                <td>56.11</td>
+                            </tr>
+                            <tr>
+                                <td>Hexene</td>
+                                <td>336</td>
+                                <td>84.16</td>
+                            </tr>
+                            <tr>
+                                <td>Methyl Pentanoate</td>
+                                <td>399</td>
+                                <td>116.16</td>
+                            </tr>
+                            <tr>
+                                <td>Ethyl Levulinate</td>
+                                <td>479</td>
+                                <td>144.17</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </li>
+                <li data-row="2" data-col="2" data-sizex="1" data-sizey="1">
+                    <table id="selected-compounds">
+                        <thead>
+                            <tr>
+                                <th>Percentage</th>
+                                <th>Name</th>
+                                <!--th>Boiling Point</th-->
+                                <!--th>Molecular Weight</th-->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <form>
+                                        <input type="text" id="pct1">
+                                    </form>
+                                </td>
+                                <td>
+                                    <select id="comp1">
+                                        <option value="none">---</option>
+                                        <option value="butene">Butene</option>
+                                        <option value="hexene">Hexene</option>
+                                        <option value="methyl_pentanoate">Methyl Pentanoate</option>
+                                        <option value="ethyl_levulinate">Ethyl Levulinate</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <form>
+                                        <input type="text" id="pct2">
+                                    </form>
+                                </td>
+                                <td>
+                                    <select id="comp2">
+                                        <option value="none">---</option>
+                                        <option value="butene">Butene</option>
+                                        <option value="hexene">Hexene</option>
+                                        <option value="methyl_pentanoate">Methyl Pentanoate</option>
+                                        <option value="ethyl_levulinate">Ethyl Levulinate</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            </tr>
+                                <td>
+                                    <form>
+                                        <input type="text" id="pct3">
+                                    </form>
+                                </td>
+                                <td>
+                                    <select id="comp3">
+                                        <option value="none">---</option>
+                                        <option value="butene">Butene</option>
+                                        <option value="hexene">Hexene</option>
+                                        <option value="methyl_pentanoate">Methyl Pentanoate</option>
+                                        <option value="ethyl_levulinate">Ethyl Levulinate</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <form>
+                                        <input type="text" id="pct4">
+                                    </form>
+                                </td>
+                                <td>
+                                    <select id="comp4">
+                                        <option value="none">---</option>
+                                        <option value="butene">Butene</option>
+                                        <option value="hexene">Hexene</option>
+                                        <option value="methyl_pentanoate">Methyl Pentanoate</option>
+                                        <option value="ethyl_levulinate">Ethyl Levulinate</option>
+                                    </select>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <br/>
+                    <br/>
+                    <button type="button" id="simulate">Run</button>
+                </li>
+            </ul>
     </body>
 </html>
