@@ -15,11 +15,11 @@ require.config({
     }
 });
 
-require(['/assets/javascripts/chart.js',
+require(['/assets/javascripts/chartnew.js',
         '/assets/javascripts/json.js',
         'datatables',
         'gridster',
-    ], function(Chart){
+    ], function(){
  
     /**
      * Makes an ajax call.
@@ -166,11 +166,6 @@ require(['/assets/javascripts/chart.js',
             if (inputs) ajaxCall(inputs);
         });
         
-        // Configure the add compound button to make the ajax call
-        /*document.getElementById("add-compound").addEventListener("click", function(){
-            addCompound();
-        });*/
-        
         // Configure the sample compounds datatable
         $('#sample-compounds').dataTable({
             'paging': false,
@@ -188,7 +183,7 @@ require(['/assets/javascripts/chart.js',
         $(".gridster ul").gridster({
             autogrow_cols: true,
             widget_margins: [20, 20],
-            widget_base_dimensions: [600, 300]
+            widget_base_dimensions: [600, 100]
         });
     }
 
@@ -203,38 +198,49 @@ require(['/assets/javascripts/chart.js',
         
         // Do some quick refactoring
         console.log(response);
-    
+        
+        // Generate the chart data
+        var chartData = [
+            {
+                label: "Reference Mixture",
+                fillColor: "rgba(220,220,220,0)",
+                strokeColor: "rgba(220,220,220,1)",
+                pointColor: "rgba(220,220,220,1)",
+                pointStrokeColor: "#fff",
+                pointHighlightFill: "#fff",
+                pointHighlightStroke: "rgba(220,220,220,1)",
+                data: response.gas,
+                title: "Gasoline",
+            }
+        ];
+        
+        if (response.y_axis) {
+            chartData[1] = {
+                label: "My Mixture",
+                fillColor: "rgba(183,1,1,0)",
+                strokeColor: "rgba(183,1,1,1)",
+                pointColor: "rgba(183,1,1,1)",
+                pointStrokeColor: "#fff",
+                pointHighlightFill: "#fff",
+                pointHighlightStroke: "rgba(183,1,1,1)",
+                data: response.y_axis,
+                title: "Your Mixture"
+            };
+        }
+        
         // Create the data chart with the appropriate data
         var lineChartData = {
-        
-            labels : response.x_axis,
-            datasets : [
-                {
-                    label: "Reference Mixture",
-                    fillColor : "rgba(220,220,220,0.2)",
-                    strokeColor : "rgba(220,220,220,1)",
-                    pointColor : "rgba(220,220,220,1)",
-                    pointStrokeColor : "#fff",
-                    pointHighlightFill : "#fff",
-                    pointHighlightStroke : "rgba(220,220,220,1)",
-                    data : response.gas
-                },
-                {
-                    label: "My Mixture",
-                    fillColor : "rgba(151,187,205,0.2)",
-                    strokeColor : "rgba(151,187,205,1)",
-                    pointColor : "rgba(151,187,205,1)",
-                    pointStrokeColor : "#fff",
-                    pointHighlightFill : "#fff",
-                    pointHighlightStroke : "rgba(151,187,205,1)",
-                    data : response.y_axis
-                }
-            ]
+            labels: response.x_axis,
+            datasets: chartData
         };
    
         // Render the chart to HTML
         var ctx = document.getElementById("canvas").getContext("2d");
         window.myLine = new Chart(ctx).Line(lineChartData, {
+            graphTitle: "Simulated Distillation Curve",
+            yAxisLabel: "Recovered Temperature (K)",
+            xAxisLabel: "Percent Evaporated (%)",
+            legend: true,
             responsive: true,
             scaleShowLabels: true,
             scaleOverride: true,
@@ -244,9 +250,4 @@ require(['/assets/javascripts/chart.js',
             legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].strokeColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>"
         });
     }
-    
-    
-    // Chart.noConflict restores the Chart global variable to it's previous owner
-    // The function returns what was previously Chart, allowing you to reassign.
-    var Chartjs = Chart.noConflict();
 });
