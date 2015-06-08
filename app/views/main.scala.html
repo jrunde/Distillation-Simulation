@@ -7,6 +7,7 @@
         <title>@title</title>
         <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/dataTables.css")">
         <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/gridster.css")">
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/avgrund.css")">
         <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
         <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/uw-logo.png")">
         
@@ -70,8 +71,6 @@
                             <tr>
                                 <th>Percentage</th>
                                 <th>Name</th>
-                                <!--th>Boiling Point</th-->
-                                <!--th>Molecular Weight</th-->
                             </tr>
                         </thead>
                         <tbody>
@@ -142,6 +141,22 @@
                         </tbody>
                     </table>
                     <button type="button" id="simulate" style="width:100px; float:right;">Run</button>
+                </li>
+                <li data-row="4" data-col="2" data-sizex="1" data-sizey="2">
+                    <table id="trials">
+                        <thead>
+                            <tr>
+                                <th>Trials</th>
+                                <th>% Butene</th>
+                                <th>% Hexene</th>
+                                <th>% Methyl Pentanoate</th>
+                                <th>% Ethyl Levulinate</th>
+                                <th>Score</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
                 </li>
             </ul>
     </body>

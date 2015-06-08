@@ -12,6 +12,7 @@
 }
 
 .gridster .gs-w {
+    background: #fff;
     z-index: 2;
     position: absolute;
 }

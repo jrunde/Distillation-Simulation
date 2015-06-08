@@ -17,6 +17,8 @@ public class Application extends Controller {
 	// Create the matlab communication layer
 	public static MatlabController mat = new MatlabController();
 
+	// Create the distillation game
+	public static Game game = new Game();
 
 	/**
 	 * Triggers the index home page.
@@ -86,7 +88,7 @@ public class Application extends Controller {
 		response().setContentType("text/javascript");
 		
 		// Perform the simulation via matlab
-		ObjectNode function = mat.calculate(comps, pcts);
+		ArrayNode function = mat.calculate(comps, pcts);
 			
 		// If there are no errors, return the json data
 		return ok(function);

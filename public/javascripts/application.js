@@ -12,6 +12,7 @@ require.config({
         'gridster-draggable': '/assets/javascripts/draggable',
         'gridster-coords': '/assets/javascripts/coords',
         'gridster-utils': '/assets/javascripts/utils',
+        'avgrund': '/assets/javascripts/avgrund'
     }
 });
 
@@ -19,8 +20,16 @@ require(['/assets/javascripts/chartnew.js',
         '/assets/javascripts/json.js',
         'datatables',
         'gridster',
+        'gridster-collision',
+        'gridster-draggable',
+        'gridster-coords',
+        'gridster-utils',
+        'avgrund'
     ], function(){
- 
+
+    // Instatiable variables
+    var trials;
+    
     /**
      * Makes an ajax call.
      *
@@ -32,8 +41,8 @@ require(['/assets/javascripts/chartnew.js',
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             data: JSON.stringify(components),
-            success : update,
-            error : onError
+            success: update,
+            error: onError
         }
  
         jsRoutes.controllers.Application.ajaxCall().ajax(ajaxCallBack);
@@ -46,6 +55,27 @@ require(['/assets/javascripts/chartnew.js',
     var onError = function(error) {
         console.log("Error");
         console.log(error);
+    }
+    
+    /**
+     * Handles an ajax error.
+     *
+     */
+    var avgrund = function(message) {
+        
+        // Configure the avgrund modal window layer
+        $('#simulate').avgrund({
+			height: 200,
+			holderClass: 'custom',
+			showClose: true,
+            showCloseText: 'Close',
+            closeByEscape: true,
+            closeByDocument: true,
+			enableStackAnimation: true,
+			onBlurContainer: '.container',
+            openOnEvent: false,
+            template: message
+		});
     }
 
     /**
@@ -120,10 +150,10 @@ require(['/assets/javascripts/chartnew.js',
         
             // Defend against bad percentage data
             if (sum < 0) {
-                alert("Not all percentage inputs are correctly formatted.");
+                avgrund('<p>Not all percentage inputs are correctly formatted.</p>');
                 return;
             } else if (sum != 1) {
-                alert("Your percentages do not add up to 1.");
+                avgrund('<p>Your percentages do not add up to 1.</p>');
                 return;
             }
         }
@@ -145,7 +175,7 @@ require(['/assets/javascripts/chartnew.js',
      *
      */
     $(function() {
-    
+      
         launch();
     });
     
@@ -154,37 +184,53 @@ require(['/assets/javascripts/chartnew.js',
      *
      */
     function launch() {
-        
-        console.log("Javascript viewport has been launched.");
     
         // Configure the initial data table with dummy data
         ajaxCall(getInputs(false));
         
         // Configure the run simulation button to make the ajax call
-        document.getElementById("simulate").addEventListener("click", function(){
+        document.getElementById('simulate').addEventListener('click', function(){
+            
+            // Get the user's component inputs
             var inputs = getInputs(true);
-            if (inputs) ajaxCall(inputs);
+            
+            // If the input is valid...
+            if (inputs) {
+            
+                // Send the data to the model
+                ajaxCall(inputs);
+                
+                // Print an avgrund modal message
+                avgrund('<p>Calculating your distillation curve. Results will appear shortly.');
+            }
         });
         
-        // Configure the sample compounds datatable
+        // Configure the sample compounds data table
         $('#sample-compounds').dataTable({
             'paging': false,
             'searching':false,
         });
         
-        // Configure the selected compounds dynatable
+        // Configure the selected compounds data table
         $('#selected-compounds').dataTable({
             'ordering': false,
             'paging': false,
             'searching':false,
         });
         
+        // Configure the trials data table
+        trials = $('#trials').dataTable({
+            'ordering': true,
+            'paging': false,
+            'searching':false,
+        });
+        
         // Configure the layout grid
-        $(".gridster ul").gridster({
+        $('.gridster ul').gridster({
             autogrow_cols: true,
             widget_margins: [20, 20],
             widget_base_dimensions: [600, 100]
-        });
+        }).data('gridster').disable();
     }
 
     /**
@@ -199,7 +245,15 @@ require(['/assets/javascripts/chartnew.js',
         // Do some quick refactoring
         console.log(response);
         
-        // Generate the chart data
+        // Store the current trial number
+        var curr = response.length - 1;
+        
+        // Add the trial data to the trial chart
+        if (response.y_axis) {
+        
+        }
+        
+        // Generate the initial chart data
         var chartData = [
             {
                 label: "Reference Mixture",
@@ -209,28 +263,51 @@ require(['/assets/javascripts/chartnew.js',
                 pointStrokeColor: "#fff",
                 pointHighlightFill: "#fff",
                 pointHighlightStroke: "rgba(220,220,220,1)",
-                data: response.gas,
+                data: response[curr].gas,
                 title: "Gasoline",
             }
         ];
         
-        if (response.y_axis) {
+        // If the user has submitted at least one trial...
+        if (curr > 0) {
+        
+            // Fill the user distillation curve into the chart
             chartData[1] = {
-                label: "My Mixture",
+                label: "Your Mixture",
                 fillColor: "rgba(183,1,1,0)",
                 strokeColor: "rgba(183,1,1,1)",
                 pointColor: "rgba(183,1,1,1)",
                 pointStrokeColor: "#fff",
                 pointHighlightFill: "#fff",
                 pointHighlightStroke: "rgba(183,1,1,1)",
-                data: response.y_axis,
+                data: response[curr].y_axis,
                 title: "Your Mixture"
             };
+        
+            // Create an array for the trial data table backend
+            var trialData = [
+                'Trial ' + curr,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                response[curr].score + '%'
+            ];
+        
+            // Step through the user component percentages
+            for (var i = 0; i < response[curr].pcts.length; i++) {
+        
+                // If the pct is not null, place it in the trialData array
+                if (response[curr].pcts[i]) trialData[i + 1] = response[curr].pcts[i];
+            }
+        
+            // Fill the user trial data into the table
+            trials.fnAddData(trialData, true);
         }
         
         // Create the data chart with the appropriate data
         var lineChartData = {
-            labels: response.x_axis,
+            labels: response[curr].x_axis,
             datasets: chartData
         };
    
@@ -247,7 +324,7 @@ require(['/assets/javascripts/chartnew.js',
             scaleSteps: 25,
             scaleStepWidth: 20,
             scaleStartValue: 0,
-            legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].strokeColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>"
+            legendTemplate: "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].strokeColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>"
         });
     }
 });
