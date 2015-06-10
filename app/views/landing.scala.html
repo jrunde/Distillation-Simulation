@@ -6,8 +6,8 @@
     @Html(org.webjars.RequireJS.getSetupJavaScript(routes.WebJarAssets.at("").url))
 </script>
 
-<script data-main="@routes.Assets.at("javascripts/application.js")" src="@routes.WebJarAssets.at(WebJarAssets.locate("require.min.js"))"></script>
+<script data-main="@routes.Assets.at("javascripts/landing.js")" src="@routes.WebJarAssets.at(WebJarAssets.locate("require.min.js"))"></script>
 
-@main("Distillation Simulation") {
+@options("Distillation Simulation") {
     
 }

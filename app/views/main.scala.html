@@ -21,9 +21,12 @@
     <body>
         <div class="gridster">
             <ul>
-                <li data-row="1" data-col="1" data-sizex="2" data-sizey="1">
+                <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
                     <img src="@routes.Assets.at("images/uw-logo.jpg")" style="height:80px" Hspace="30px" align="left"/>
                     <h1>Distillation Simulation</h1>
+                </li>
+                <li data-row="1" data-col="2" data-sizex="1" data-sizey="1">
+                    <h1 id="level" align="right"></h1>
                 </li>
                 <li data-row="2" data-col="1" data-sizex="1" data-sizey="6">
 		            <div style="width:100%">
@@ -140,7 +143,7 @@
                             </tr>
                         </tbody>
                     </table>
-                    <button type="button" id="simulate" style="width:100px; float:right;">Run</button>
+                    <button type="button" id="simulate">Run</button>
                 </li>
                 <li data-row="4" data-col="2" data-sizex="1" data-sizey="2">
                     <table id="trials">

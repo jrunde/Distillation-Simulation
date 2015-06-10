@@ -234,7 +234,7 @@ require(['/assets/javascripts/chartnew.js',
     }
 
     /**
-     * Updates the chart with the ajax return data
+     * Updates the viewport with the ajax return data
      *
      */
     function update(response) {
@@ -245,13 +245,12 @@ require(['/assets/javascripts/chartnew.js',
         // Do some quick refactoring
         console.log(response);
         
-        // Store the current trial number
-        var curr = response.length - 1;
+        // Display the game level
+        document.getElementById('level').innerHTML = 'Level ' + response.level;
         
-        // Add the trial data to the trial chart
-        if (response.y_axis) {
-        
-        }
+        // Store the current trial number and data
+        var curr = response.data.length - 1;
+        var data = response.data;
         
         // Generate the initial chart data
         var chartData = [
@@ -263,7 +262,7 @@ require(['/assets/javascripts/chartnew.js',
                 pointStrokeColor: "#fff",
                 pointHighlightFill: "#fff",
                 pointHighlightStroke: "rgba(220,220,220,1)",
-                data: response[curr].gas,
+                data: data[curr].gas,
                 title: "Gasoline",
             }
         ];
@@ -280,7 +279,7 @@ require(['/assets/javascripts/chartnew.js',
                 pointStrokeColor: "#fff",
                 pointHighlightFill: "#fff",
                 pointHighlightStroke: "rgba(183,1,1,1)",
-                data: response[curr].y_axis,
+                data: data[curr].y_axis,
                 title: "Your Mixture"
             };
         
@@ -291,14 +290,14 @@ require(['/assets/javascripts/chartnew.js',
                 0.0,
                 0.0,
                 0.0,
-                response[curr].score + '%'
+                data[curr].score + '%'
             ];
         
             // Step through the user component percentages
-            for (var i = 0; i < response[curr].pcts.length; i++) {
+            for (var i = 0; i < data[curr].pcts.length; i++) {
         
                 // If the pct is not null, place it in the trialData array
-                if (response[curr].pcts[i]) trialData[i + 1] = response[curr].pcts[i];
+                if (data[curr].pcts[i]) trialData[i + 1] = data[curr].pcts[i];
             }
         
             // Fill the user trial data into the table
@@ -307,7 +306,7 @@ require(['/assets/javascripts/chartnew.js',
         
         // Create the data chart with the appropriate data
         var lineChartData = {
-            labels: response[curr].x_axis,
+            labels: data[curr].x_axis,
             datasets: chartData
         };
    

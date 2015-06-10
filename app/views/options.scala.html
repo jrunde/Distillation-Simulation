@@ -1,0 +1,35 @@
+@(title: String)(content: Html)
+
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>@title</title>
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/dataTables.css")">
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/gridster.css")">
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/avgrund.css")">
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/landing.css")">
+        <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/uw-logo.png")">
+        
+        <!-- Embedded Javascript Router -->
+        @helper.javascriptRouter("jsRoutes")(
+            routes.javascript.Application.index,
+            routes.javascript.Application.ajaxCall
+        )
+        
+    </head>
+    <body>
+        <div class="gridster">
+            <ul>
+                <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
+                    <img id="logo" src="@routes.Assets.at("images/uw-logo.jpg")" Hspace="30px" align="left"/>
+                    <h1>Distillation Simulation</h1>
+                </li>
+                <li data-row="2" data-col="1" data-sizex="1" data-sizey="1">
+                </li>
+                <li data-row="3" data-col="1" data-sizex="1" data-sizey="1">
+                    <button type="button" id="play">Play</button>
+                </li>
+            </ul>
+    </body>
+</html>

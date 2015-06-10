@@ -1,7 +1,8 @@
-#simulate {
-    float: right;
-    height: 25px;
-    width: 100px;
+#play {
+    float: left;
+    height: 50px;
+    width: 300px;
+    font-size: 25px;
     text-align: center;
     background-color: #b70101;
     -moz-border-radius: 5px;
@@ -11,4 +12,8 @@
     text-decoration: none;
     cursor: poiner;
     border:none;
+}
+
+#logo {
+    height: 80px;
 }

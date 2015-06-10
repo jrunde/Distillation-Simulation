@@ -1,7 +1,6 @@
 package controllers;
 
 import java.util.*;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
  * Represents a level of the user's distillation simulation game. This
@@ -59,8 +58,10 @@ public class Level {
 	 * @param the number of the trial
 	 * 
 	 */
-	public void addTrial(ObjectNode trial, int num) {
+	public void addTrial(double[] x_axis, double[] y_axis, double[] gas,
+			Double score, String[] comps, Double[] pcts, int num) {
 		
-		trials.add(new Trial(trial, num));
+		// Add the trial data as a new trial
+		trials.add(new Trial(x_axis, y_axis, gas, score, comps, pcts, num));
 	}
 }
