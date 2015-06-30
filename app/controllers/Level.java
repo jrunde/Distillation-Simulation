@@ -11,8 +11,8 @@ import java.util.*;
 public class Level {
 
 	// Instantiable variables
-	private int level;
 	private ArrayList<Trial> trials;
+	private LevelData data;
 	
 	/**
 	 * The default constructor creates a new level with the given number.
@@ -20,11 +20,11 @@ public class Level {
 	 * @param the level number
 	 * 
 	 */
-	public Level(int num) {
+	public Level(LevelData data) {
 		
 		// Initialize instantiable variables
-		level = num;
-		trials = new ArrayList<Trial>();
+		this.data = data;
+		this.trials = new ArrayList<Trial>();
 	}
 	
 	/**
@@ -48,7 +48,42 @@ public class Level {
 	 */
 	public int getNumber() {
 		
-		return level;
+		return data.getNum();
+	}
+	
+	/**
+	 * Accessor for the level's component data.
+	 * 
+	 * @return the component data for the level
+	 * 
+	 */
+	public ArrayList<Component> getComponents() {
+		
+		return data.getComponents();
+	}
+	
+	/**
+	 * Accessor for the level's reference curve. Note that this curve will
+	 * only be defined in terms of matlab variable names. It has no display
+	 * name properties because it will never be visible to the client.
+	 * 
+	 * @return the reference curve for the level
+	 * 
+	 */
+	public ArrayList<String> getReference() {
+		
+		return data.getReference();
+	}
+	
+	/**
+	 * Accessor for the level's reference curve component percentages.
+	 * 
+	 * @return the reference percentages for the level
+	 * 
+	 */
+	public ArrayList<Double> getRefPercentages() {
+		
+		return data.getRefPercentages();
 	}
 	
 	/**

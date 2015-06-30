@@ -6,29 +6,37 @@
  */
 require.config({
     paths: {
+        'selectric': '/assets/javascripts/selectric',
         'datatables': '/assets/javascripts/dataTables',
         'gridster': '/assets/javascripts/gridster',
         'gridster-collision': '/assets/javascripts/collision',
         'gridster-draggable': '/assets/javascripts/draggable',
         'gridster-coords': '/assets/javascripts/coords',
         'gridster-utils': '/assets/javascripts/utils',
-        'avgrund': '/assets/javascripts/avgrund'
-    }
+        'avgrund': '/assets/javascripts/avgrund',
+    },
 });
 
-require(['/assets/javascripts/chartnew.js',
+require([
+        '/assets/javascripts/chartnew.js',
         '/assets/javascripts/json.js',
+        'selectric',
         'datatables',
         'gridster',
         'gridster-collision',
         'gridster-draggable',
         'gridster-coords',
         'gridster-utils',
-        'avgrund'
+        'avgrund',
     ], function(){
-
-    // Instatiable variables
+    
+    // Instantiable variables
+    var samples;
     var trials;
+    var comp1;
+    var comp2;
+    var comp3;
+    var comp4;
     
     /**
      * Makes an ajax call.
@@ -40,7 +48,10 @@ require(['/assets/javascripts/chartnew.js',
             method: "POST",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-            data: JSON.stringify(components),
+            data: JSON.stringify({
+                task: 'update',
+                inputs: components,
+            }),
             success: update,
             error: onError
         }
@@ -122,7 +133,7 @@ require(['/assets/javascripts/chartnew.js',
         
         // Package the components into an array
         var components = [
-            select1.options[select1.selectedIndex].value,
+            //select1.options[select1.selectedIndex].value,
             select2.options[select2.selectedIndex].value,
             select3.options[select3.selectedIndex].value,
             select4.options[select4.selectedIndex].value
@@ -171,13 +182,13 @@ require(['/assets/javascripts/chartnew.js',
     
     /**
      * Document on ready function. This is essentially the main function
-     * for the java script code.
+     * for the javascript code.
      *
      */
-    $(function() {
-      
-        launch();
-    });
+    //$(function() {
+    
+        //launch();
+    //});
     
     /**
      * Launches the viewport.
@@ -185,8 +196,12 @@ require(['/assets/javascripts/chartnew.js',
      */
     function launch() {
     
-        // Configure the initial data table with dummy data
-        ajaxCall(getInputs(false));
+        // Configure the layout grid
+        $('.gridster ul').gridster({
+            autogrow_cols: true,
+            widget_margins: [20, 20],
+            widget_base_dimensions: [600, 100]
+        }).data('gridster').disable();
         
         // Configure the run simulation button to make the ajax call
         document.getElementById('simulate').addEventListener('click', function(){
@@ -201,14 +216,19 @@ require(['/assets/javascripts/chartnew.js',
                 ajaxCall(inputs);
                 
                 // Print an avgrund modal message
-                avgrund('<p>Calculating your distillation curve. Results will appear shortly.');
+                avgrund('<p>Calculating your distillation curve. Results will appear shortly.</p>');
             }
         });
         
         // Configure the sample compounds data table
-        $('#sample-compounds').dataTable({
+        samples = $('#sample-compounds').dataTable({
             'paging': false,
-            'searching':false,
+            'searching': false,
+            'columns': [
+                {'title': 'Name'},
+                {'title': 'Boiling Point (K)'},
+                {'title': 'Molecular Molar Mass (g)'}
+            ]
         });
         
         // Configure the selected compounds data table
@@ -217,20 +237,42 @@ require(['/assets/javascripts/chartnew.js',
             'paging': false,
             'searching':false,
         });
-        
+/*
         // Configure the trials data table
         trials = $('#trials').dataTable({
             'ordering': true,
             'paging': false,
             'searching':false,
+            'columns': [
+                {'title': 'Trials'},
+                {'title': '%'},
+                {'title': '%'},
+                {'title': '%'},
+                {'title': '%'},
+                {'title': 'Score'},
+            ]
         });
+*/
+        // Configure the dropdown menus
+        /*comp1 = $('#comp1').selectric();
+        comp2 = $('#comp2').selectric();
+        comp3 = $('#comp3').selectric();
+        comp4 = $('#comp4').selectric();*/
         
-        // Configure the layout grid
-        $('.gridster ul').gridster({
-            autogrow_cols: true,
-            widget_margins: [20, 20],
-            widget_base_dimensions: [600, 100]
-        }).data('gridster').disable();
+        // Configure the initial data table with dummy data
+        ajaxCall(getInputs(false));
+    }
+    
+    /**
+     * Appends the given set of options to the given dropdown menu.
+     *
+     */
+    var append = function(options, menu) {
+    
+        if (!options) return;
+        
+        for (var i = 0; i < options.length; i++)
+            menu.append('<option>' + options[i] + '</option>');
     }
 
     /**
@@ -241,16 +283,56 @@ require(['/assets/javascripts/chartnew.js',
         
         // Block against null data
         if (!response) return;
-        
+
         // Do some quick refactoring
         console.log(response);
-        
-        // Display the game level
-        document.getElementById('level').innerHTML = 'Level ' + response.level;
         
         // Store the current trial number and data
         var curr = response.data.length - 1;
         var data = response.data;
+        var compsamples = response.samples;
+        
+        // Display the game level
+        document.getElementById('level').innerHTML = 'Level ' + response.level;
+        
+        // Create an array for the sample data
+        var sampleData = [];
+        
+        // Step through the sample components
+        for (var i = 0; i < compsamples.length; i++) {
+        
+            // Place the component data in the array
+            sampleData[i] = [compsamples[i].name, compsamples[i].boilpoint, compsamples[i].mass];
+        }
+
+        // Fill the sample data into the table
+        samples.fnAddData(sampleData, true);
+
+        // Fill in the dropdown menu options
+        console.log(sampleData);
+        var options = [];
+        for (var i = 0; i < sampleData.length; i++) options[i] = sampleData[i][0];
+        console.log(options);
+/*        
+        append(options, comp1);
+        append(options, comp2);
+        append(options, comp3);
+        append(options, comp4);
+*/
+        
+        // Configure the trials data table
+        trials = $('#trials').dataTable({
+            'ordering': true,
+            'paging': false,
+            'searching':false,
+            'columns': [
+                {'title': 'Trials'},
+                {'title': '% ' + options[0]},
+                {'title': '% ' + options[1]},
+                {'title': '% ' + options[2]},
+                {'title': 'Score'},
+            ]
+        });
         
         // Generate the initial chart data
         var chartData = [
@@ -326,4 +408,6 @@ require(['/assets/javascripts/chartnew.js',
             legendTemplate: "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].strokeColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>"
         });
     }
+    
+    launch();
 });

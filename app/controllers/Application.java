@@ -53,7 +53,7 @@ public class Application extends Controller {
 		response().setContentType("text/javascript");
 		
 		// Parse the ajax request
-		ObjectNode response = ajax.parse(request().body().asJson());
+		ObjectNode response = ajax.handle(request().body().asJson());
 		
 		// Return the json response
 		return ok(response);

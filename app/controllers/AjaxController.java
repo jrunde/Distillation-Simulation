@@ -25,83 +25,99 @@ public class AjaxController {
 	}
 
 	/**
-	 * Parses the json request to get the user input data and feeds this
-	 * to the handling function. It returns the result of the handle.
+	 * Handles the json request and passes it on to the appropriate helper
+	 * function before returning the resulting data.
 	 * 
 	 * @param the json request
 	 * @return the json response
 	 * 
 	 */
-	public ObjectNode parse(JsonNode json) {
+	public ObjectNode handle(JsonNode json) {
 
 		// Check for a null json request
 		if (json == null) return null;
 
+		// Create a response object and store the task label
+		ObjectNode response = null;
+		String task = json.findPath("task").asText();
+
+		// Execute the method cooresponding to the task label
+		if (task.equalsIgnoreCase("update")) 
+			response = update(json.findPath("inputs"));
+		else if (task.equalsIgnoreCase("advance")) response = advance();
+		else if (task.equalsIgnoreCase("quit")) response = end("quit");
+		else return null;
+
+		// Return the json response
+		return response;
+	}
+
+	/**
+	 * Parses the json request into user input and builds the appropriate json
+	 * response. It also tells the game to calculate a simulation trial if the
+	 * user trial input is valid.
+	 * 
+	 * @param the json request
+	 * @return the json response
+	 * 
+	 */
+	private ObjectNode update(JsonNode json) {
+
+		// Check if game is over
+		if (Application.game.isOver()) return end("complete");
+		
 		// Create data structures to store the component and percent inputs
 		ArrayList<String> comps = new ArrayList<String>();
 		ArrayList<Double> pcts = new ArrayList<Double>();
 
-		// TODO: there could be more safeguards here against bad json data
-		// Get an iterator to iterate through the component json array
-		Iterator<JsonNode> iter = json.findPath("comps").elements();
+		// Parse the request only if the input is articulated
+		if (json != null && json.findPath("comps") != null &&
+				json.findPath("pcts") != null) {
 
-		// Copy the json elements into the component list
-		while (iter.hasNext()) {
+			// Get an iterator to iterate through the component json array
+			Iterator<JsonNode> iter = json.findPath("comps").elements();
 
-			// Store each iteration value
-			JsonNode value = iter.next();
+			// Copy the json elements into the component list
+			while (iter.hasNext()) {
 
-			// Throw out "none" inputs
-			if (!value.asText().equals("none")) 
-				comps.add(value.asText());
+				// Store each iteration value
+				JsonNode value = iter.next();
+
+				// Throw out "none" inputs
+				if (!value.asText().equals("none")) comps.add(value.asText());
+			}
+
+			// Get new iterator to step through json percentage array
+			iter = json.findPath("pcts").elements();
+
+			// Copy the json elements into the percentage array
+			while (iter.hasNext()) {
+
+				// Store each iteration value
+				JsonNode value = iter.next();
+
+				// Throw out "none" inputs
+				if (value.asDouble() != 0) pcts.add(value.asDouble());
+			}
 		}
 
-		// Get new iterator to step through json percentage array
-		iter = json.findPath("pcts").elements();
-
-		// Copy the json elements into the percentage array
-		while (iter.hasNext()) {
-
-			// Store each iteration value
-			JsonNode value = iter.next();
-
-			// Throw out "none" inputs
-			if (value.asDouble() != 0) 
-				pcts.add(value.asDouble());
-		}
-
-		// Handle the request and return the json message
-		return handle(comps, pcts);
-	}
-	
-	/**
-	 * Takes in user input and builds the appropriate json response. It also
-	 * tells the game to calculate a simulation trial if the user trial input
-	 * is valid.
-	 * 
-	 * @param the user's input components
-	 * @param the user's input percentages
-	 * @return the json response
-	 * 
-	 */
-	private ObjectNode handle(ArrayList<String> comps, ArrayList<Double> pcts) {
-		
 		// If inputs exist, perform the simulation
 		if (!comps.isEmpty()) Application.game.calculate(comps, pcts);
-		
+
 		// Build the json message from the trial data
 		ArrayList<Trial> trials = Application.game.getLevel().getTrials();
-		
+
 		// Create the json structures to return the data
 		ObjectNode response = Json.newObject();
 		ArrayNode data = new ArrayNode(null);
-		
+		ArrayNode samples = new ArrayNode(null);
+
 		// Step through the trial data
 		for (int i = 0; i < trials.size(); i++) {
-			
+
 			// Create a new json trial object
 			ObjectNode trial = Json.newObject();
-			
+
 			// Place all the relevant data into the object
 			trial.put("x_axis", Json.toJson(trials.get(i).getX()));
 			trial.put("y_axis", Json.toJson(trials.get(i).getY()));
@@ -110,15 +126,71 @@ public class AjaxController {
 			trial.put("comps", Json.toJson(trials.get(i).getComps()));
 			trial.put("pcts", Json.toJson(trials.get(i).getPcts()));
 			trial.put("num", Json.toJson(i));
-			
+
 			// Add the object to the data array
 			data.add(trial);
 		}
 		
+		// Step through the sample data for the level
+		ArrayList<Component> sampleCmps = 
+				Application.game.getLevel().getComponents();
+		
+		for (int i = 0; i < sampleCmps.size(); i++) {
+			
+			// Create a new sample component object
+			ObjectNode sampleCmp = Json.newObject();
+			
+			// Place all the relevant data into the object
+			sampleCmp.put("name", sampleCmps.get(i).getName());
+			sampleCmp.put("matname", sampleCmps.get(i).getMatlabName());
+			sampleCmp.put("boilpoint", sampleCmps.get(i).getBoilingPoint());
+			sampleCmp.put("mass", sampleCmps.get(i).getMass());
+			
+			// Add the object to the sample component array
+			samples.add(sampleCmp);
+		}
+
 		// Add the data and level to the json response
 		response.put("data", data);
+		response.put("samples", samples);
 		response.put("level", Application.game.getLevel().getNumber());
+
+		return response;
+	}
+
+	/**
+	 * Tells the game to advance to the next level.
+	 * 
+	 * @return the json response
+	 * 
+	 */
+	private ObjectNode advance() {
+
+		// Advance the game to the next level
+		Application.game.advanceLevel();
+
+		// Update the client side
+		return update(null);
+	}
+	
+	/**
+	 * Ends the game.
+	 * 
+	 * @param the end mode
+	 * @return the json response
+	 * 
+	 */
+	private ObjectNode end(String mode) {
+
+		// Create the json structures to return the data
+		ObjectNode response = Json.newObject();
 		
+		// If the game is quit, deallocate memory for it
+		if (mode.equalsIgnoreCase("quit")) Application.game = new Game();
+	
+		// Add the data and level to the json response
+		response.put("end_mode", mode);
+
 		return response;
 	}
 }

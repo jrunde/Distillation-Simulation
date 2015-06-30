@@ -5,6 +5,7 @@
 <html>
     <head>
         <title>@title</title>
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/selectric.css")">
         <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/dataTables.css")">
         <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/gridster.css")">
         <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/avgrund.css")">
@@ -16,7 +17,6 @@
             routes.javascript.Application.index,
             routes.javascript.Application.ajaxCall
         )
-        
     </head>
     <body>
         <div class="gridster">
@@ -36,37 +36,7 @@
 		            </div>
                 </li>
                 <li data-row="2" data-col="2" data-sizex="1" data-sizey="2">
-                    <table id="sample-compounds">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Boiling Point (K)</th>
-                                <th>Molecular Weight (g)</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Butene</td>
-                                <td>267</td>
-                                <td>56.11</td>
-                            </tr>
-                            <tr>
-                                <td>Hexene</td>
-                                <td>336</td>
-                                <td>84.16</td>
-                            </tr>
-                            <tr>
-                                <td>Methyl Pentanoate</td>
-                                <td>399</td>
-                                <td>116.16</td>
-                            </tr>
-                            <tr>
-                                <td>Ethyl Levulinate</td>
-                                <td>479</td>
-                                <td>144.17</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <table id="sample-compounds"></table>
                 </li>
                 <li data-row="3" data-col="2" data-sizex="1" data-sizey="3">
                     <table id="selected-compounds">
@@ -146,20 +116,7 @@
                     <button type="button" id="simulate">Run</button>
                 </li>
                 <li data-row="4" data-col="2" data-sizex="1" data-sizey="2">
-                    <table id="trials">
-                        <thead>
-                            <tr>
-                                <th>Trials</th>
-                                <th>% Butene</th>
-                                <th>% Hexene</th>
-                                <th>% Methyl Pentanoate</th>
-                                <th>% Ethyl Levulinate</th>
-                                <th>Score</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
+                    <table id="trials"></table>
                 </li>
             </ul>
     </body>

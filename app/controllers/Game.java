@@ -1,6 +1,6 @@
 package controllers;
 
-import java.util.ArrayList;
+import java.util.*;
 import matlabcontrol.MatlabInvocationException;
 
 /**
@@ -10,11 +10,13 @@ import matlabcontrol.MatlabInvocationException;
  */
 public class Game {
 
+	// Game constants
+	public static final int LAST_LEVEL = 5;
+
 	// Instantiable variables
 	private MatlabController mat;
 	private Level level;
-
-	// TODO: Should there be architecture for telling when the game is finished?
+	private boolean isOver;
 
 	/**
 	 * The default constructor creates the game's first level.
@@ -24,38 +26,46 @@ public class Game {
 
 		// Initialize the instantiable variables
 		mat = new MatlabController();
-		level = new Level(1);
+		level = new Level(new LevelData(1));
+		isOver = false;
 
 		// Initialize the new level
 		initLevel();
 	}
 
 	/**
-	 * Uses the matlab controller to initialize the current level by basically
-	 * just loading the gasoline curve from the matlab models and storing it
+	 * Uses the matlab controller to initialize the current level by
+	 * calculating the target curve from the matlab models and storing it
 	 * into the new level trial data.
 	 * 
 	 */
-	public void initLevel() {
+	private void initLevel() {
 
 		Object recovered = null;
-		Object tsummerd86 = null;
-		Object score = 88.0; // TODO: plug this into the models
+		Object t1 = null;
+
+		// Refactor the user input data
+		String[] comps = new String[level.getReference().size()];
+		Double[] pcts = new Double[level.getRefPercentages().size()];
+		comps = level.getReference().toArray(comps);
+		pcts = level.getRefPercentages().toArray(pcts);
 
 		try {
 
 			// Clear the matlab workspace
 			mat.clear();
 
-			// Fetch the target distillation curve
-			mat.loadData();
-			tsummerd86 = mat.get("T_summerD86");
+			// Pass in the user input
+			mat.set("n", comps.length);
+			mat.set("cmp", comps);
+			mat.set("pct", pcts);
 
-			// TODO: More graceful way to do this?
-			// Fetch the recovered percentage spread
-			double[] x = {0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65,
-					70, 75, 80, 85, 90, 95, 100};
-			recovered = x;
+			// Run the script
+			mat.runModels();
+
+			// Store the outputs
+			recovered = mat.get("recovered");
+			t1 = mat.get("T1");
 		} 
 
 		catch (MatlabInvocationException e) {
@@ -65,8 +75,8 @@ public class Game {
 		}
 
 		// Store the data as the zeroth trial
-		level.addTrial((double[]) recovered, null, (double[]) tsummerd86,
-				(Double) score, null, null, level.getTrials().size() + 1);
+		level.addTrial((double[]) recovered, null, (double[]) t1,
+				null, null, null, 0);
 	}
 
 	/**
@@ -81,8 +91,7 @@ public class Game {
 
 		Object recovered = null;
 		Object t1 = null;
-		Object tsummerd86 = null;
-		Object score = 88.0; // TODO: plug this into the models
+		Object score = null;
 		int trialNum = level.getTrials().size() + 1;
 
 		// Refactor the user input data
@@ -107,7 +116,6 @@ public class Game {
 			// Store the outputs
 			recovered = mat.get("recovered");
 			t1 = mat.get("T1");
-			tsummerd86 = mat.get("T_summerD86");
 		} 
 
 		catch (MatlabInvocationException e) {
@@ -115,10 +123,42 @@ public class Game {
 			// On failure, print stack trace
 			e.printStackTrace();
 		}
+
+		// Grab the reference curve
+		double[] ref = level.getTrials().get(0).getGas();
 		
+		// Calculate the score
+		score = calcScore((double[]) recovered, ref);
+
 		// Store the entry in the trial data
 		level.addTrial((double[]) recovered, (double[]) t1,
-				(double[]) tsummerd86, (Double) score, comps, pcts, trialNum);
+				ref, (Double) score, comps, pcts, trialNum);
+	}
+
+	/**
+	 * Calculates the score for a given trial. This might be a temporary method
+	 * to be eliminated once the matlab models are used to generate a score.
+	 * TODO: have the matlab models calculate the score.
+	 * 
+	 * @param the y plot of the distillation curve
+	 * @param the y plot of the gasoline reference curve
+	 * @return the score of the curve compared to gasoline
+	 * 
+	 */
+	private Double calcScore(double[] sim, double[] gas) {
+
+		// Find the sum of the differences in curves
+		double sum = 0;
+		for (int i = 0; i < sim.length; i++) sum += Math.abs(sim[i] - gas[i]);
+
+		// Calculate the score based on the average difference in curves
+		double avg = sum / (double) sim.length;
+		double score = 100.0 - avg;
+
+		// If the score is so bad that it's negative, just return 0
+		if (score < 0) score = 0;
+
+		return score;
 	}
 
 	/**
@@ -133,6 +173,17 @@ public class Game {
 	}
 
 	/**
+	 * Accessor for the game's end status.
+	 * 
+	 * @return the level of the game
+	 * 
+	 */
+	public boolean isOver() {
+
+		return this.isOver;
+	}
+
+	/**
 	 * Advances the current level of the game to the next level.
 	 * 
 	 * @return the level of the game
@@ -140,10 +191,26 @@ public class Game {
 	 */
 	public void advanceLevel() {
 
-		// Create the new level
-		level = new Level(level.getNumber() + 1);
+		// If there are no more levels, end the game
+		if (level.getNumber() + 1 > LAST_LEVEL) endGame();
 
-		// Initialize the new level
-		initLevel();
+		// Otherwise advance to the next level
+		else {
+
+			// Create the new level
+			level = new Level(new LevelData(level.getNumber() + 1));
+
+			// Initialize the new level
+			initLevel();
+		}
+	}
+
+	/**
+	 * Ends the game.
+	 * 
+	 */
+	private void endGame() {
+
+		this.isOver = true;
 	}
 }
