@@ -128,7 +128,7 @@ public class Game {
 		double[] ref = level.getTrials().get(0).getGas();
 		
 		// Calculate the score
-		score = calcScore((double[]) recovered, ref);
+		score = calcScore((double[]) t1, ref);
 
 		// Store the entry in the trial data
 		level.addTrial((double[]) recovered, (double[]) t1,
@@ -150,11 +150,11 @@ public class Game {
 		// Find the sum of the differences in curves
 		double sum = 0;
 		for (int i = 0; i < sim.length; i++) sum += Math.abs(sim[i] - gas[i]);
-
+		
 		// Calculate the score based on the average difference in curves
 		double avg = sum / (double) sim.length;
 		double score = 100.0 - avg;
-
+		
 		// If the score is so bad that it's negative, just return 0
 		if (score < 0) score = 0;
 
