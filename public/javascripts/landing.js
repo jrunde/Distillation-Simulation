@@ -6,18 +6,18 @@
  */
 require.config({
     paths: {
-        'datatables': '/assets/javascripts/dataTables',
-        'gridster': '/assets/javascripts/gridster',
-        'gridster-collision': '/assets/javascripts/collision',
-        'gridster-draggable': '/assets/javascripts/draggable',
-        'gridster-coords': '/assets/javascripts/coords',
-        'gridster-utils': '/assets/javascripts/utils',
-        'avgrund': '/assets/javascripts/avgrund'
+        'datatables': '/assets/javascripts/plugins/dataTables',
+        'gridster': '/assets/javascripts/plugins/gridster',
+        'gridster-collision': '/assets/javascripts/plugins/collision',
+        'gridster-draggable': '/assets/javascripts/plugins/draggable',
+        'gridster-coords': '/assets/javascripts/plugins/coords',
+        'gridster-utils': '/assets/javascripts/plugins/utils',
+        'avgrund': '/assets/javascripts/plugins/avgrund'
     }
 });
 
-require(['/assets/javascripts/chartnew.js',
-        '/assets/javascripts/json.js',
+require(['/assets/javascripts/plugins/chartnew.js',
+        '/assets/javascripts/plugins/json.js',
         'datatables',
         'gridster',
         'gridster-collision',

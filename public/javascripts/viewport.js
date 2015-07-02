@@ -8,6 +8,7 @@ function viewport() {
 	var sample_table;
 	var selection_table;
 	var trial_table;
+	var advanced;
 	
 	this.init = function(messenger) {
 	
@@ -16,6 +17,7 @@ function viewport() {
 		sample_table = new sampleTable();
 		selection_table = new selectionTable();
 		trial_table = new trialTable();
+		advanced = false;
 		
 		// Configure the layout grid
     	$('.gridster ul').gridster({
@@ -30,6 +32,7 @@ function viewport() {
     	    var inputs = selection_table.get_inputs(true);
     	    if (inputs) {
             
+				console.log('Sending user inputs to models.');
     	        messenger.send('update', inputs);
     	        new modal('<p>Calculating your distillation curve. Results will appear shortly.</p>');
     	    }
@@ -58,5 +61,26 @@ function viewport() {
 		selection_table.update(message);
 		trial_table.update(message);
 		graph.update(message);
+		
+		// Check if the level has been completed
+		var score = message.data[message.data.length - 1].score;
+		if (!advanced && score && score > 90) advance();
+		else advanced = false;
+	}
+	
+	/**
+ 	 * Advances the level by displaying a modal message and sending
+	 * a new ajax call to advance.
+ 	 */
+	function advance() {
+		
+		
+		advanced = true;
+		new modal('<p>You matched the curve! Moving on to the next level.</p>');
+		
+		setTimeout(function() {
+			console.log("Advancing to the next level.");
+			messenger.send('advance', null);
+		}, 3000);
 	}
 }
