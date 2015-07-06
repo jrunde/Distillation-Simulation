@@ -16,7 +16,7 @@ public class Trial {
 	private final String[] comps;
 	private final Double[] pcts;
 	private final int num;
-	
+
 	/**
 	 * The default constructor for catalogues trial data by the number
 	 * given.
@@ -27,7 +27,7 @@ public class Trial {
 	 */
 	public Trial(double[] x_axis, double[] y_axis, double[] gas, Double score,
 			String[] comps, Double[] pcts, int num) {
-		
+
 		// Initialize Instantiable variables
 		this.x_axis = x_axis;
 		this.y_axis = y_axis;
@@ -37,7 +37,7 @@ public class Trial {
 		this.pcts = pcts;
 		this.num = num;
 	}
-	
+
 	/**
 	 * Accessor for the x_axis associated with a given trial.
 	 * 
@@ -45,10 +45,10 @@ public class Trial {
 	 * 
 	 */
 	public double[] getX() {
-		
+
 		return this.x_axis;
 	}
-	
+
 	/**
 	 * Accessor for the y_axis associated with a given trial.
 	 * 
@@ -56,10 +56,10 @@ public class Trial {
 	 * 
 	 */
 	public double[] getY() {
-		
+
 		return this.y_axis;
 	}
-	
+
 	/**
 	 * Accessor for the gasoline reference associated with a given trial.
 	 * 
@@ -67,14 +67,16 @@ public class Trial {
 	 * 
 	 */
 	public double[] getGas() {
-		
+
 		// TODO: This is for testing purposes
-		for (int i = 0; i < gas.length; i++) System.out.print(gas[i]+"  ");
-		System.out.println();
-		
+		if (gas != null) {
+			for (int i = 0; i < gas.length; i++) System.out.print(gas[i]+"  ");
+			System.out.println();
+		}
+
 		return this.gas;
 	}
-	
+
 	/**
 	 * Accessor for the score associated with a given trial.
 	 * 
@@ -82,10 +84,10 @@ public class Trial {
 	 * 
 	 */
 	public Double getScore() {
-		
+
 		return this.score;
 	}
-	
+
 	/**
 	 * Accessor for the components associated with a given trial.
 	 * 
@@ -93,10 +95,10 @@ public class Trial {
 	 * 
 	 */
 	public String[] getComps() {
-		
+
 		return this.comps;
 	}
-	
+
 	/**
 	 * Accessor for the percentages associated with a given trial.
 	 * 
@@ -104,10 +106,10 @@ public class Trial {
 	 * 
 	 */
 	public Double[] getPcts() {
-		
+
 		return this.pcts;
 	}
-	
+
 	/**
 	 * Accessor for the number associated with a given trial.
 	 * 
@@ -115,7 +117,7 @@ public class Trial {
 	 * 
 	 */
 	public int getNum() {
-		
+
 		return this.num;
 	}
 }
