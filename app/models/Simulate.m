@@ -1,6 +1,6 @@
 
 % load in required data
-load('allcomponents_lib_updated.mat');
+load('allComponents_lib_updated.mat');
 load('GC_data_updated.mat');
 load('Ideal_Distillations_V4.mat');
 
