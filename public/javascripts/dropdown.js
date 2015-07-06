@@ -4,10 +4,10 @@
  */
 function dropdown(index) {
 	
-	var menu = $('#comp' + index).selectric();
+	var menu = $('#comp' + index).selectric().empty();
 	var samples;
 	var matnames;
-	
+  
 	/**
  	 * Appends the samples in the array as options in the menu.
  	 */

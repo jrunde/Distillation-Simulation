@@ -77,7 +77,7 @@ function selectionTable() {
 		// Create the forms and dropdown menus
         for (var i = 0; i < names.sampleNames.length; i++) {
 			
-			forms[i] = new form(i);
+			forms[i] = new textform(i);
 			menus[i] = new dropdown(i);
 			menus[i].append(names.sampleNames, names.matNames);
 		}

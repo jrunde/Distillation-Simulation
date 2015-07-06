@@ -32,7 +32,6 @@ function viewport() {
     	    var inputs = selection_table.get_inputs(true);
     	    if (inputs) {
             
-				console.log('Sending user inputs to models.');
     	        messenger.send('update', inputs);
     	        new modal('<p>Calculating your distillation curve. Results will appear shortly.</p>');
     	    }
@@ -52,6 +51,10 @@ function viewport() {
 	this.update = function(message) {
 		
 		console.log(message);
+		if (message.end_mode) {
+			end(message.end_mode);
+			return;
+		}
 		
 		// Display the game level
         document.getElementById('level').innerHTML = 'Level ' + message.level;
@@ -74,13 +77,27 @@ function viewport() {
  	 */
 	function advance() {
 		
-		
 		advanced = true;
 		new modal('<p>You matched the curve! Moving on to the next level.</p>');
 		
 		setTimeout(function() {
-			console.log("Advancing to the next level.");
 			messenger.send('advance', null);
 		}, 3000);
+	}
+	
+	/**
+ 	 * Ends the game.
+ 	 */
+	function end(mode) {
+		
+		if (mode == 'complete') {
+			new modal('<p>Congratulations! You completed all of the levels.</p>');
+		
+			setTimeout(function() {
+				messenger.send('quit', null);
+			}, 3000);
+		}
+		
+		else if (mode == 'quit') window.location.href = '/';
 	}
 }

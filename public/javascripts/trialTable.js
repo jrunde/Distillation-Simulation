@@ -5,6 +5,7 @@
 function trialTable() {
 	
 	var table;
+	var col_size;
 	
 	/**
  	 * Updates the trial table and its data based on the json received
@@ -15,21 +16,34 @@ function trialTable() {
 		// Parse the json message
 		var info = parse_json(json);
 		
-		// Create the table based on the samples
-		if (table) table.fnDestroy();
+		// Create the column array
+		var columns = [{'title': 'Trials'}];
+		for (var i = 0; i < info.sampleNames.length; i++)
+			columns[i + 1] = {'title': '% ' + info.sampleNames[i]};
+		columns[columns.length] = {'title': 'Score'};
+		
+		// Properly destroy the table
+		if (table) {
+			
+			table.fnClearTable(true);
+			table.fnDestroy(false);
+			
+			for (var i = 0; i < columns.length - col_size; i++) {
+				$("#trials thead tr th").eq(i).after('<th></th>');
+			}
+		}
+		
+		// Create the new updated table
 		table = $('#trials').dataTable({
             'ordering': true,
             'paging': false,
             'searching':false,
-            'columns': [
-                {'title': 'Trials'},
-                {'title': '% ' + info.sampleNames[0]},
-                {'title': '% ' + info.sampleNames[1]},
-                {'title': '% ' + info.sampleNames[2]},
-                {'title': 'Score'},
-            ],
+            'columns': columns,
 			'data': info.trialData
         });
+		
+		// Update column size
+		col_size = columns.length;
 	}
 	
 	/**

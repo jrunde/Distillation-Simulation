@@ -185,8 +185,8 @@ public class AjaxController {
 		// Create the json structures to return the data
 		ObjectNode response = Json.newObject();
 		
-		// If the game is quit, deallocate memory for it
-		if (mode.equalsIgnoreCase("quit")) Application.game = new Game();
+		// If the game is quit, deallocate it's memory
+		if (mode.equalsIgnoreCase("quit")) Application.remove();
 	
 		// Add the data and level to the json response
 		response.put("end_mode", mode);

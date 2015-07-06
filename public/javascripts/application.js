@@ -10,10 +10,11 @@ require.config({
 		'selectric': {
 			deps: ['jquery'],
 			exports: 'selectric'
-		}
+		},
 	},
     paths: {
 		'jquery': '//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js',
+		'form': '/assets/javascripts/plugins/form',
         'selectric': '/assets/javascripts/plugins/selectric',
         'datatables': '/assets/javascripts/plugins/dataTables',
         'gridster': '/assets/javascripts/plugins/gridster',
@@ -35,9 +36,10 @@ require([
 		'/assets/javascripts/sampleTable.js',
 		'/assets/javascripts/selectionTable.js',
 		'/assets/javascripts/dropdown.js',
-		'/assets/javascripts/form.js',
+		'/assets/javascripts/textform.js',
         '/assets/javascripts/plugins/json.js',
 		'/assets/javascripts/plugins/chartnew.js',
+		'form',
         'datatables',
         'gridster',
         'gridster-collision',

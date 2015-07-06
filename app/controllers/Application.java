@@ -15,7 +15,7 @@ public class Application extends Controller {
 	public static AjaxController ajax = new AjaxController();
 	
 	// Create the distillation game
-	public static Game game = new Game();
+	public static Game game;
 
 	/**
 	 * Triggers the landing page.
@@ -35,6 +35,9 @@ public class Application extends Controller {
 	 */
 	public static Result index() {
 
+		// Make sure a game is instantiated
+		if (game == null) game = new Game();
+		
 		// Render the index with a simple message
 		return ok(index.render());
 	}
@@ -57,5 +60,18 @@ public class Application extends Controller {
 		
 		// Return the json response
 		return ok(response);
+	}
+	
+	/**
+	 * Removes the game and cleans up after matlab.
+	 * 
+	 * @return the results of the simulation
+	 */
+	@BodyParser.Of(BodyParser.Json.class)
+	public static void remove() {
+		
+		// Kill the game
+		game.destroy();
+		game = null;
 	}
 }

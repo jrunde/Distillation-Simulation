@@ -11,7 +11,7 @@ import matlabcontrol.MatlabInvocationException;
 public class Game {
 
 	// Game constants
-	public static final int LAST_LEVEL = 5;
+	public static final int LAST_LEVEL = 4;
 
 	// Instantiable variables
 	private MatlabController mat;
@@ -212,5 +212,15 @@ public class Game {
 	private void endGame() {
 
 		this.isOver = true;
+	}
+	
+	/**
+	 * Kills all of the game's resources.
+	 * 
+	 */
+	public void destroy() {
+
+		// Exit the matlab session
+		this.mat.exit();
 	}
 }

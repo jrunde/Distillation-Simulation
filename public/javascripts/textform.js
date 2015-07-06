@@ -1,16 +1,17 @@
 /**
  * This class represents a form blank.
  */
-function form(index) {
-	
-	var box = $('#pct' + index);
+function textform(index) {
+
+	var box = $('#pct' + index).ajaxForm();
+	box.clearFields();
 	
 	/**
  	 * Returns the selected item in the dropdown menu.
  	 */
 	this.get_value = function() {
-    
-        return parse_pct(box[0].value); // Don't know why [0] is necessary...
+
+        return parse_pct(box.fieldValue(false));
     }
 	
 	/**
@@ -18,7 +19,7 @@ function form(index) {
      *
      */
     function parse_pct(num) {
-    
+		
         // Parse the raw input
         var d = parseFloat(num);
         
