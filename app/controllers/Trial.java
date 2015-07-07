@@ -68,12 +68,6 @@ public class Trial {
 	 */
 	public double[] getGas() {
 
-		// TODO: This is for testing purposes
-		if (gas != null) {
-			for (int i = 0; i < gas.length; i++) System.out.print(gas[i]+"  ");
-			System.out.println();
-		}
-
 		return this.gas;
 	}
 

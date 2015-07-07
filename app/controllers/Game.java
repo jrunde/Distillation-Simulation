@@ -17,18 +17,23 @@ public class Game {
 	private MatlabController mat;
 	private Level level;
 	private boolean isOver;
+	private String id;
+	private long stamp;
 
 	/**
 	 * The default constructor creates the game's first level.
 	 * 
+	 * @param the string ID of the game
 	 */
-	public Game() {
+	public Game(String ID) {
 
 		// Initialize the instantiable variables
 		mat = new MatlabController();
 		level = new Level(new LevelData(1));
 		isOver = false;
-
+		id = ID;
+		stamp = (new Date().getTime()) / 1000;
+		
 		// Initialize the new level
 		initLevel();
 	}
@@ -160,7 +165,18 @@ public class Game {
 
 		return score;
 	}
+	
+	/**
+	 * Accessor for the game's identification code.
+	 * 
+	 * @return the ID of the game
+	 * 
+	 */
+	public String getID() {
 
+		return id;
+	}
+	
 	/**
 	 * Accessor for the game's current level.
 	 * 
@@ -222,5 +238,27 @@ public class Game {
 
 		// Exit the matlab session
 		this.mat.exit();
+	}
+	
+	/**
+	 * Time-stamps the game so that the garbage collector can tell
+	 * when it was last active. The idea is to know when to get rid
+	 * of old game data.
+	 * 
+	 */
+	public void stamp() {
+
+		stamp = (new Date().getTime()) / 1000;
+	}
+	
+	/**
+	 * Retrieves last time-stamp.
+	 * 
+	 * @return the last time-stamp of the game.
+	 * 
+	 */
+	public long getLastStamp() {
+
+		return stamp;
 	}
 }

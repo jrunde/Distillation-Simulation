@@ -4,6 +4,8 @@
  */
 function messenger(viewport) {
 	
+	var hashcode = makeid();
+	
 	/**
      * Makes an ajax call.
      *
@@ -22,7 +24,7 @@ function messenger(viewport) {
             error: onError
         }
  
-        jsRoutes.controllers.Application.ajaxCall().ajax(ajaxCallBack);
+        jsRoutes.controllers.Application.ajaxCall(hashcode).ajax(ajaxCallBack);
     };
  
     /**
@@ -31,7 +33,22 @@ function messenger(viewport) {
      */
     function onError(error) {
         
-		console.log("Error");
         console.log(error);
     }
+	
+	/**
+     * Generates a unique hashcode for each messenger to stamp the game
+	 * with a unique ID.
+     *
+     */
+	function makeid() {
+		
+    	var text = "";
+    	var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+    	for(var i = 0; i < 10; i++)
+        	text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+    	return text;
+	}
 }
