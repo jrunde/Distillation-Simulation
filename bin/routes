@@ -3,16 +3,16 @@
 # ~~~~
 
 # Landing page
-GET     /                           	controllers.Application.landing()
+GET     /                           		controllers.Application.landing()
 
-GET	/play				controllers.Application.index()
+GET	/play					controllers.Application.index()
 
 # Javascript routing
-POST     /assets/javascripts/routes	controllers.Application.ajaxCall()
+POST     /assets/javascripts/routes/:id		controllers.Application.ajaxCall(id: String)
 
 # Map static resources from the /public folder to the /assets URL path
-GET     /assets/*file               	controllers.Assets.at(path="/public", file)
-GET     /vassets/*file              	controllers.Assets.versioned(path="/public", file: Asset)
-GET     /webjars/*file              	controllers.WebJarAssets.at(file)
+GET     /assets/*file               		controllers.Assets.at(path="/public", file)
+GET     /vassets/*file              		controllers.Assets.versioned(path="/public", file: Asset)
+GET     /webjars/*file              		controllers.WebJarAssets.at(file)
 
 

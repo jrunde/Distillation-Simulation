@@ -6,6 +6,7 @@
     <head>
         <title>@title</title>
         <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/selectric.css")">
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/stepper.css")">
         <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/dataTables.css")">
         <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/gridster.css")">
         <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/avgrund.css")">
@@ -50,7 +51,7 @@
                             <tr>
                                 <td>
                                     <form>
-                                        <input type="text" id="pct0">
+                                        <input type="number" id="pct0" value="0" min="0" max="100" step="5">
                                     </form>
                                 </td>
                                 <td>
@@ -60,7 +61,7 @@
                             <tr>
                                 <td>
                                     <form>
-                                        <input type="text" id="pct1">
+                                        <input type="number" id="pct1" value="0" min="0" max="100" step="5">
                                     </form>
                                 </td>
                                 <td>
@@ -70,7 +71,7 @@
                             </tr>
                                 <td>
                                     <form>
-                                        <input type="text" id="pct2">
+                                        <input type="number" id="pct2" value="0" min="0" max="100" step="5">
                                     </form>
                                 </td>
                                 <td>

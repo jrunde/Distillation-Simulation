@@ -11,9 +11,13 @@ require.config({
 			deps: ['jquery'],
 			exports: 'selectric'
 		},
+		'stepper': {
+			deps: ['jquery'],
+			exports: 'stepper'
+		},
 	},
     paths: {
-		'jquery': '//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js',
+	    'jquery': '//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js',
 		'form': '/assets/javascripts/plugins/form',
         'selectric': '/assets/javascripts/plugins/selectric',
         'datatables': '/assets/javascripts/plugins/dataTables',
@@ -24,6 +28,7 @@ require.config({
         'gridster-utils': '/assets/javascripts/plugins/utils',
         'avgrund': '/assets/javascripts/plugins/avgrund',
 		'chartnew': '/assets/javascripts/plugins/chartnew.js',
+		'stepper': '/assets/javascripts/plugins/stepper',
     },
 });
 
@@ -37,6 +42,7 @@ require([
 		'/assets/javascripts/selectionTable.js',
 		'/assets/javascripts/dropdown.js',
 		'/assets/javascripts/textform.js',
+		'/assets/javascripts/incrementbox.js',
         '/assets/javascripts/plugins/json.js',
 		'/assets/javascripts/plugins/chartnew.js',
 		'form',
@@ -48,6 +54,7 @@ require([
         'gridster-utils',
         'avgrund',
 		'selectric',
+		'stepper',
     ], function() {
 	
 	// Instantiate the viewport and the ajax messenger

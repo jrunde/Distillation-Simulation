@@ -33,7 +33,7 @@ public class Game {
 		isOver = false;
 		id = ID;
 		stamp = (new Date().getTime()) / 1000;
-		
+
 		// Initialize the new level
 		initLevel();
 	}
@@ -105,6 +105,10 @@ public class Game {
 		comps = components.toArray(comps);
 		pcts = percentages.toArray(pcts);
 
+		// Convert percentages to decimals
+		for (int i = 0; i < pcts.length; i++) pcts[i] = pcts[i] / 100.0;
+
+
 		try {
 
 			// Clear the matlab workspace
@@ -131,7 +135,7 @@ public class Game {
 
 		// Grab the reference curve
 		double[] ref = level.getTrials().get(0).getGas();
-		
+
 		// Calculate the score
 		score = calcScore((double[]) t1, ref);
 
@@ -155,17 +159,17 @@ public class Game {
 		// Find the sum of the differences in curves
 		double sum = 0;
 		for (int i = 0; i < sim.length; i++) sum += Math.abs(sim[i] - gas[i]);
-		
+
 		// Calculate the score based on the average difference in curves
 		double avg = sum / (double) sim.length;
 		double score = 100.0 - avg;
-		
+
 		// If the score is so bad that it's negative, just return 0
 		if (score < 0) score = 0;
 
 		return score;
 	}
-	
+
 	/**
 	 * Accessor for the game's identification code.
 	 * 
@@ -176,7 +180,7 @@ public class Game {
 
 		return id;
 	}
-	
+
 	/**
 	 * Accessor for the game's current level.
 	 * 
@@ -229,7 +233,7 @@ public class Game {
 
 		this.isOver = true;
 	}
-	
+
 	/**
 	 * Kills all of the game's resources.
 	 * 
@@ -239,7 +243,7 @@ public class Game {
 		// Exit the matlab session
 		this.mat.exit();
 	}
-	
+
 	/**
 	 * Time-stamps the game so that the garbage collector can tell
 	 * when it was last active. The idea is to know when to get rid
@@ -250,7 +254,7 @@ public class Game {
 
 		stamp = (new Date().getTime()) / 1000;
 	}
-	
+
 	/**
 	 * Retrieves last time-stamp.
 	 * 

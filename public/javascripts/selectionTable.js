@@ -40,8 +40,9 @@ function selectionTable() {
             if (sum < 0) {
                 new modal('<p>Not all percentage inputs are correctly formatted.</p>');
                 return;
-            } else if (sum != 1) {
-                new modal('<p>Your percentages do not add up to 1.</p>');
+            } else if (sum != 100) {
+				console.log(sum);
+                new modal('<p>Your percentages do not add up to 100.</p>');
                 return;
             }
         }
@@ -77,7 +78,8 @@ function selectionTable() {
 		// Create the forms and dropdown menus
         for (var i = 0; i < names.sampleNames.length; i++) {
 			
-			forms[i] = new textform(i);
+			//forms[i] = new textform(i);
+			forms[i] = new incrementbox(i);
 			menus[i] = new dropdown(i);
 			menus[i].append(names.sampleNames, names.matNames);
 		}

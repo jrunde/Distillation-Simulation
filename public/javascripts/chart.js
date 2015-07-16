@@ -23,8 +23,8 @@ function chart() {
             scaleShowLabels: true,
             scaleOverride: true,
             scaleSteps: 25,
-            scaleStepWidth: 20,
-            scaleStartValue: 0,
+            scaleStepWidth: 6,
+            scaleStartValue: 300,
             legendTemplate: '<ul class=\"<%=name.toLowerCase()%>-legend\">' + 
 				'<% for (var i=0; i<datasets.length; i++){%><li><span style=' + 
 				'\"background-color:<%=datasets[i].strokeColor%>\"></span>' +
