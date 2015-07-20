@@ -76,15 +76,14 @@ function trialTable() {
 				for (var i = 0; i < sampleNames.length; i++) {
 					
 					if (sampleNames[i].toLowerCase() == trials[j].comps[k]) {
-						trialData[j - 1][i + 1] = trials[j].pcts[k] * 100;
+						trialData[j - 1][i + 1] = Math.round(trials[j].pcts[k] * 100);
 						k++;
 					}
 					else trialData[j - 1][i + 1] = 0;
-					
 				}
 				
 				// Add the score onto the end
-				trialData[j - 1][trialData[j - 1].length] = trials[j].score;
+				trialData[j - 1][trialData[j - 1].length] = Math.round(trials[j].score);
 			}
 		
 			info.trialData = trialData;

@@ -23,7 +23,7 @@ function chart() {
             scaleShowLabels: true,
             scaleOverride: true,
             scaleSteps: 25,
-            scaleStepWidth: 6,
+            scaleStepWidth: 5,
             scaleStartValue: 300,
             legendTemplate: '<ul class=\"<%=name.toLowerCase()%>-legend\">' + 
 				'<% for (var i=0; i<datasets.length; i++){%><li><span style=' + 
