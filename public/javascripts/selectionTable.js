@@ -98,7 +98,7 @@ function selectionTable() {
                 {'title': 'Name'},
                 {'title': 'Boiling Point (K)'},
                 {'title': 'Molecular Weight (g)'},
-				{'title': 'Percentage'}
+				{'title': 'Percentage (%)'}
 			]
         });
 	}

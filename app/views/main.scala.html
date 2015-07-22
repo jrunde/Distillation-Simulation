@@ -5,7 +5,6 @@
 <html>
     <head>
         <title>@title</title>
-        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/selectric.css")">
         <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/stepper.css")">
         <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/dataTables.css")">
         <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/gridster.css")">
@@ -29,22 +28,22 @@
                 <li data-row="1" data-col="2" data-sizex="1" data-sizey="1">
                     <h1 id="level" align="right"></h1>
                 </li>
-                <li data-row="2" data-col="1" data-sizex="1" data-sizey="6">
+                <li data-row="2" data-col="1" data-sizex="1" data-sizey="3">
+                    <table id="sample-compounds"></table>
+                </li>
+                <li data-row="2" data-col="2" data-sizex="1" data-sizey="5">
 		            <div style="width:100%">
 			            <div>
 			            	<canvas id="canvas" height="600" width="600"></canvas>
 			            </div>
 		            </div>
                 </li>
-                <li data-row="2" data-col="2" data-sizex="1" data-sizey="4">
-                    <table id="sample-compounds"/>
-                </li>
-                <li data-row="3" data-col="2" data-sizex="1" data-sizey="2">
-                	<table id="selected-compounds"/>
+                <li data-row="3" data-col="1" data-sizex="1" data-sizey="2">
+                	<table id="selected-compounds"></table>
                     <button type="button" id="simulate">Run</button>
                 </li>
-                <li data-row="4" data-col="2" data-sizex="1" data-sizey="2">
-                    <table id="trials"/>
+                <li data-row="4" data-col="1" data-sizex="1" data-sizey="2">
+                    <table id="trials"></table>
                 </li>
             </ul>
     	</div>

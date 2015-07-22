@@ -27,13 +27,13 @@ function sampleTable() {
 		// Create the table based on the samples
 		if (table) table.fnDestroy();
 		table = $('#sample-compounds').dataTable({
-            'paging': true,
+            'paging': false,
             'searching': false,
             'columns': [
                 {'title': 'Name'},
                 {'title': 'Boiling Point (K)'},
                 {'title': 'Molecular Weight (g)'},
-				{'title': 'Percentage'}
+				{'title': 'Percentage (%)'}
             ],
 			'data': data
         });
