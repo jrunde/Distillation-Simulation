@@ -10,7 +10,7 @@ function viewport() {
 	var trial_table;
 	var advanced;
 	
-	this.init = function(messenger) {
+	this.init = function() {
 	
 		// Instantiate all of the viewport elements
 		graph = new chart();
@@ -55,12 +55,44 @@ function viewport() {
 		
 		// Update the viewport elements
 		sample_table.update(message);
-		selection_table.update(message);
+		selection_table.update();
 		trial_table.update(message);
 		graph.update(message);
 		
 		// Have the user assess their work
 		if (message.data.length > 1) assess(message);
+	}
+	
+	/**
+ 	 * Accessor for graph.
+ 	 */
+	this.graph = function() {
+		
+		return graph;
+	}
+	
+	/**
+ 	 * Accessor for sample table.
+ 	 */
+	this.get_sample_table = function() {
+		
+		return sample_table;
+	}
+	
+	/**
+ 	 * Accessor for selection table.
+ 	 */
+	this.get_selection_table = function() {
+		
+		return selection_table;
+	}
+	
+	/**
+ 	 * Accessor for trial table.
+ 	 */
+	this.get_trial_table = function() {
+		
+		return trial_table;
 	}
 	
 	/**

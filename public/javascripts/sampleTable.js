@@ -5,6 +5,15 @@
 function sampleTable() {
 	
 	var table;
+	var forms = [];
+	
+	/**
+ 	 * Access the data of the sample table.
+ 	 */
+	this.get_data = function() {
+
+		return table.fnGetData();
+	}
 	
 	/**
  	 * Updates the sample table and its data based on the json received
@@ -18,15 +27,19 @@ function sampleTable() {
 		// Create the table based on the samples
 		if (table) table.fnDestroy();
 		table = $('#sample-compounds').dataTable({
-            'paging': false,
+            'paging': true,
             'searching': false,
             'columns': [
                 {'title': 'Name'},
                 {'title': 'Boiling Point (K)'},
-                {'title': 'Molecular Molar Mass (g)'}
-            ], 
+                {'title': 'Molecular Weight (g)'},
+				{'title': 'Percentage'}
+            ],
 			'data': data
         });
+		
+		for (var i = 0; i < data.length; i++)
+			forms[i] = new incrementbox(i);
 	}
 	
 	/**
@@ -40,7 +53,9 @@ function sampleTable() {
         var sampleData = [];
         for (var i = 0; i < samples.length; i++) {
         
-            sampleData[i] = [samples[i].name, samples[i].boilpoint, samples[i].mass];
+            sampleData[i] = [samples[i].name, samples[i].boilpoint, samples[i].mass,
+				'<form><input type="number" id="pct' + i + '" value="0" min="0" ' +
+				'max="100" step="5"></form>'];
         }
 		
 		return sampleData;

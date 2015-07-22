@@ -5,12 +5,12 @@
  * the main viewport and ajax messaging layer.
  *
  */
+ 
+var viewport;
+var messenger;
+
 require.config({
 	shim: {
-		'selectric': {
-			deps: ['jquery'],
-			exports: 'selectric'
-		},
 		'stepper': {
 			deps: ['jquery'],
 			exports: 'stepper'
@@ -19,7 +19,6 @@ require.config({
     paths: {
 	    'jquery': '//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js',
 		'form': '/assets/javascripts/plugins/form',
-        'selectric': '/assets/javascripts/plugins/selectric',
         'datatables': '/assets/javascripts/plugins/dataTables',
         'gridster': '/assets/javascripts/plugins/gridster',
         'gridster-collision': '/assets/javascripts/plugins/collision',
@@ -40,7 +39,6 @@ require([
 		'/assets/javascripts/trialTable.js',
 		'/assets/javascripts/sampleTable.js',
 		'/assets/javascripts/selectionTable.js',
-		'/assets/javascripts/dropdown.js',
 		'/assets/javascripts/incrementbox.js',
         '/assets/javascripts/plugins/json.js',
 		'/assets/javascripts/plugins/chartnew.js',
@@ -52,14 +50,13 @@ require([
         'gridster-coords',
         'gridster-utils',
 		'avgrund',
-		'selectric',
 		'stepper',
     ], function() {
 	
 	// Instantiate the viewport and the ajax messenger
-	this.viewport = new viewport();
-	this.messenger = new messenger(this.viewport);
+	viewport = new viewport();
+	messenger = new messenger(this.viewport);
 	
 	// Boot up the viewport
-	this.viewport.init(this.messenger);
+	viewport.init(this.messenger);
 });
