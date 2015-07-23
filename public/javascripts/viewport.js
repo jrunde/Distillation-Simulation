@@ -55,7 +55,7 @@ function viewport() {
 		
 		// Update the viewport elements
 		sample_table.update(message);
-		selection_table.update();
+		selection_table.update(message);
 		trial_table.update(message);
 		graph.update(message);
 		

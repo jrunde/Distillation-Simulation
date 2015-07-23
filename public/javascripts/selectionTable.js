@@ -6,54 +6,49 @@ function selectionTable() {
 	
 	var table;
 	var data = [];
+	var samples = [];
 	
 	/**
-     * Gets the user's inputs. Do not call this if update hasn't been called previously.
+     * Gets the user's inputs. Do not call if update hasn't been called previously.
      *
      */
-    this.get_inputs = function(validate) {
+    this.get_inputs = function() {
         
-		// Package the components and percentages into an array
+		// Package components and percentages into an array
+		var sum = 0;
 		var components = [];
 		var percentages = [];
-		
 		for (var i = 0; i < data.length; i++) {
-			components[i] = data[i][0];
-			percentages[i] = data[i][3]; // TODO: Make sure it gets matname here
+			
+			// Check for bad percentage data
+			percentages[i] = parseInt(data[i][3]);
+			if (isNaN(percentages[i])) {
+				
+				new modal('Not all percentage inputs are correctly formatted.', ['Ok']);
+            	return;
+			}
+			sum += percentages[i];
+			
+			// Use matlab names for components
+			for (var j = 0; j < samples.length; j++) {
+				
+				if (data[i][0] == samples[j].name)
+					components[i] = samples[j].matname;
+			}
+		}
+        
+		// Make sure percentages add up to 100
+		if (sum != 100) {
+				
+			new modal('Your percentages do not add up to 100%.', ['Ok']);
+            return;
 		}
 		
-        // Block against null components with percentages and vice versa
-        for (var i = 0; i < components.length; i++) {
-            if (components[i] == "none" && percentages[i] != 0) percentages[i] = 0.0;
-            else if (percentages[i] == 0 && components[i] != "none") components[i] = "none";
-        }
-        
-        // If validation is requested...
-        if (validate) {
-        	
-			// Add up the percentages for checking purposes
-        	var sum = 0;
-			for (var i = 0; i < percentages.length; i++) sum += percentages[i];
-            
-			// Defend against bad percentage data
-            if (sum < 0) {
-                new modal('Not all percentage inputs are correctly formatted.', ['Ok']);
-                return;
-            } else if (sum != 100) {
-                new modal('Your percentages do not add up to 100.', ['Ok']);
-                return;
-            }
-        }
-        
         // Package all of the input into a data structure
         var inputs = {
             comps: components,
             pcts: percentages
         }
-        
-		// Clear data
-		data = [];
-        console.log(inputs);
         
         return inputs;
     }
@@ -62,34 +57,14 @@ function selectionTable() {
  	 * Updates the selection table and its data based on the json received
 	 * from the controllers and models.
  	 */
-	this.update = function(index, val) {
-
-		// Parse the json message for the sample names
-		if (index != null) {
-			
-			// Format the new data to be added
-			var new_data = viewport.get_sample_table().get_data()[index];
-			new_data[3] = val;
-	
-			// Add it or amend the table to reflect the new data
-			var amended = false;
-			for (var i = 0; i < data.length; i++) {
-				if (data[i][0] == new_data[0]) {
-					if (val == 0) data.splice(i, 1);
-					else data[i] = new_data;
-					amended = true;
-				}
-			}
-			if (!amended) data[data.length] = new_data;
-
-			// Put the data into the table
-			table.fnClearTable(true);
-			for (var i = 0; i < data.length; i++) table.fnAddData(data[i], true);
-			
-			return;
-		}
+	this.update = function(json) {
+		
+		// Update the matlab names and clear data
+		samples = json.samples;
+		data = [];
 		
 		// Create the selection table
+		if (table) return;
 		table = $('#selected-compounds').dataTable({
             'ordering': false,
             'paging': false,
@@ -104,10 +79,36 @@ function selectionTable() {
 	}
 	
 	/**
+ 	 * Adds the data to the selection table based on the user's choices
+	 * in the sample table.
+ 	 */
+	this.add = function(index, val) {
+			
+		// Format the new data to be added
+		var new_data = viewport.get_sample_table().get_data()[index];
+		new_data[3] = val;
+	
+		// Add it or amend the data array to reflect the new data
+		var amended = false;
+		for (var i = 0; i < data.length; i++) {
+			if (data[i][0] == new_data[0]) {
+				if (val == 0) data.splice(i, 1);
+				else data[i] = new_data;
+				amended = true;
+			}
+		}
+		if (!amended) data[data.length] = new_data;
+
+		// Put the data into the table
+		table.fnClearTable(true);
+		for (var i = 0; i < data.length; i++) table.fnAddData(data[i], true);
+	}
+	
+	/**
  	 * Access the data of the selection table.
  	 */
 	this.get_data = function() {
 		
-		return table.fnGetData();
+		return data;
 	}
 }

@@ -29,7 +29,7 @@ function modal(message, buttons, callbacks) {
 	if (buttons) {
 		for (var i = 0; i < buttons.length; i++) {
 		
-			if (callbacks[i]) {
+			if (callbacks && callbacks[i]) {
 				document.getElementById(buttons[i]).addEventListener('click', callbacks[i]);
 			}
 		}
