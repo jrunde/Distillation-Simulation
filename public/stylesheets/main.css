@@ -1,3 +1,7 @@
+ul {
+    list-style-type: none;
+}
+
 #simulate {
     float: right;
     height: 25px;
