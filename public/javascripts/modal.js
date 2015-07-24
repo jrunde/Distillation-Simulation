@@ -16,9 +16,7 @@ function modal(message, buttons, callbacks) {
     $('#simulate').avgrund({
 		height: 200,
 		holderClass: 'custom',
-		//showClose: true,
-        //showCloseText: 'Close',
-        closeByEscape: true,
+        closeByEscape: false,
         closeByDocument: false,
 		enableStackAnimation: true,
 		onBlurContainer: '.container',

@@ -9,9 +9,18 @@ function incrementbox(index) {
 	// Set up the box's onchange function
 	box[0].onchange = function() {
 		
+		// Check if more than four components will be used
+		var data = viewport.get_selection_table().get_data();
+		if (data.length >= 4 && !value && parseInt(box.val()) >= 5) {
+			
+			box[0].value = 0;
+			new modal('You may only choose four different ' + 
+				'components for your mixture', ['Ok']);
+			return;
+		}
+		
 		// Check if user percentages will exceed 100
 		var sum = 0;
-		var data = viewport.get_selection_table().get_data();
 		for (var i = 0; i < data.length; i++) {
 			
 			sum += parseInt(data[i][3]);

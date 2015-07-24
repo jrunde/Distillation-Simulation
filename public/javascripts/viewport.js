@@ -8,7 +8,6 @@ function viewport() {
 	var sample_table;
 	var selection_table;
 	var trial_table;
-	var advanced;
 	
 	this.init = function() {
 	
@@ -23,7 +22,7 @@ function viewport() {
     	$('.gridster ul').gridster({
         	autogrow_cols: true,
         	widget_margins: [20, 20],
-        	widget_base_dimensions: [600, 100]
+        	widget_base_dimensions: [600, 80]
     	}).data('gridster').disable();
 		
 		// Configure the run simulation button to make the ajax call
@@ -56,11 +55,11 @@ function viewport() {
 		// Update the viewport elements
 		sample_table.update(message);
 		selection_table.update(message);
-		trial_table.update(message);
 		graph.update(message);
 		
 		// Have the user assess their work
 		if (message.data.length > 1) assess(message);
+		else trial_table.update(message);
 	}
 	
 	/**
@@ -119,21 +118,19 @@ function viewport() {
 			
 			// Advance if level has been completed
 			var score = message.data[message.data.length - 1].score;
+			trial_table.update(message);
 			
-			if (!advanced && score && score > 90) {
+			if (score > 95) {
 				
 				// Change button
 				document.getElementById('simulate').innerHTML = 'Next Level';
 				document.getElementById('simulate').removeEventListener('click', run);
 				document.getElementById('simulate').addEventListener('click', advance);
 			}
-			
-			else advanced = false;
 		};
 		
 		var no = function() {
-			
-			
+			trial_table.update(message);
 		};
 		
 		new modal('Do you think this mixture would make a good drop-in fuel ' + 
@@ -146,7 +143,6 @@ function viewport() {
  	 */
 	function advance() {
 		
-		advanced = true;
 		messenger.send('advance', null);
 		
 		// Change button back

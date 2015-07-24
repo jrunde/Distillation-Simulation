@@ -66,7 +66,7 @@ function selectionTable() {
 		// Create the selection table
 		if (table) return;
 		table = $('#selected-compounds').dataTable({
-            'ordering': false,
+            'ordering': true,
             'paging': false,
             'searching':false,
 			'columns': [

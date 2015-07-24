@@ -82,7 +82,7 @@ public class Application extends Controller {
 		Object[] names = games.keySet().toArray();
 		for (int i = 0; i < names.length; i++) 
 			message += ("\t" + (String) names[i] + "\t\t\t" + 
-					games.get(id).getLastStamp() + "\n");
+					games.get(i).getLastStamp() + "\n");
 		log(message);
 	}
 

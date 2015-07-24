@@ -27,19 +27,25 @@ function sampleTable() {
 		// Create the table based on the samples
 		if (table) table.fnDestroy();
 		table = $('#sample-compounds').dataTable({
-            'paging': false,
+            'paging': true,
             'searching': false,
+			'iDisplayLength': 4,
+			'dom': '<"top">rt<"bottom"ip><"clear">',
             'columns': [
                 {'title': 'Name'},
                 {'title': 'Boiling Point (K)'},
                 {'title': 'Molecular Weight (g)'},
 				{'title': 'Percentage (%)'}
             ],
-			'data': data
         });
 		
-		for (var i = 0; i < data.length; i++)
+		// Add all of the data to the table
+		table.fnClearTable(true);
+		for (var i = 0; i < data.length; i++) {
+			
+			table.fnAddData(data[i], true);
 			forms[i] = new incrementbox(i);
+		}
 	}
 	
 	/**

@@ -42,9 +42,9 @@ public class LevelData {
 			reference.add("ethanol");
 			percentages.add(1.0);
 
-			// Add the sample component data
-			components.add(new Component("Ethanol", "ethanol", 46.07, 352));
+			// Add the sample component data (NOTE: must be in reverse order!)
 			components.add(new Component("Propanol", "propanol", 60.10, 370));
+			components.add(new Component("Ethanol", "ethanol", 46.07, 352));
 			components.add(new Component("Butanol", "butanol", 74.12, 391));
 
 			break;
@@ -57,11 +57,11 @@ public class LevelData {
 			percentages.add(.5);
 			percentages.add(.5);
 
-			// Add the sample component data
-			components.add(new Component("Ethanol", "ethanol", 46.07, 352));
+			// Add the sample component data (NOTE: must be in reverse order!)
 			components.add(new Component("Propanol", "propanol", 60.10, 370));
-			components.add(new Component("Butanol", "butanol", 74.12, 391));
 			components.add(new Component("Methanol", "methanol", 32.04, 338));
+			components.add(new Component("Ethanol", "ethanol", 46.07, 352));
+			components.add(new Component("Butanol", "butanol", 74.12, 391));
 
 			break;
 
@@ -75,14 +75,14 @@ public class LevelData {
 			percentages.add(.5);
 			percentages.add(.25);
 
-			// Add the sample component data
-			components.add(new Component("Ethanol", "ethanol", 46.07, 352));
+			// Add the sample component data (NOTE: must be in reverse order!)
 			components.add(new Component("Propanol", "propanol", 60.10, 370));
-			components.add(new Component("Butanol", "butanol", 74.12, 391));
 			components.add(new Component("Methanol", "methanol", 32.04, 338));
 			components.add(new Component("Isobutanol", 
 					"isobutanol", 74.12, 381));
-
+			components.add(new Component("Ethanol", "ethanol", 46.07, 352));
+			components.add(new Component("Butanol", "butanol", 74.12, 391));
+			
 			break;
 
 		case 4:
@@ -97,15 +97,15 @@ public class LevelData {
 			percentages.add(.4);
 			percentages.add(.1);
 
-			// Add the sample component data
-			components.add(new Component("Ethanol", "ethanol", 46.07, 352));
+			// Add the sample component data (NOTE: must be in reverse order!)
 			components.add(new Component("Propanol", "propanol", 60.10, 370));
-			components.add(new Component("Butanol", "butanol", 74.12, 391));
+			components.add(new Component("Pentanol", "pentanol", 88.15, 410));
 			components.add(new Component("Methanol", "methanol", 32.04, 338));
 			components.add(new Component("Isobutanol", 
 					"isobutanol", 74.12, 381));
-			components.add(new Component("Pentanol", "pentanol", 88.15, 410));
-
+			components.add(new Component("Ethanol", "ethanol", 46.07, 352));
+			components.add(new Component("Butanol", "butanol", 74.12, 391));
+			
 			break;
 
 		case 5:
@@ -114,14 +114,14 @@ public class LevelData {
 			reference.add("T_EEE");
 			percentages.add(1.0);
 
-			// Add the sample component data
-			components.add(new Component("Butene", "butene", 56.11, 267));
-			components.add(new Component("Hexene", "hexene", 84.16, 336));
+			// Add the sample component data (NOTE: must be in reverse order!)
 			components.add(new Component("Methyl Pentanoate", 
 					"methyl_pentanoate", 116.16, 399));
+			components.add(new Component("Hexene", "hexene", 84.16, 336));
 			components.add(new Component("Ethyl Levulinate", 
 					"ethyl_levulinate", 144.17, 479));
-
+			components.add(new Component("Butene", "butene", 56.11, 267));
+			
 			break;
 
 		default:
