@@ -33,6 +33,10 @@ function incrementbox(index) {
 		
 		// Update internal value
 		value = parseInt(box.val());
+		if (isNaN(value)) {
+			value = 0;
+			return;
+		}
 		
 		// Add the input to the selection table
 		viewport.get_selection_table().add(index, value);
