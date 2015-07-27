@@ -21,6 +21,7 @@ function viewport() {
 		// Configure the layout grid
     	$('.gridster ul').gridster({
         	autogrow_cols: true,
+			max_cols: 2,
         	widget_margins: [20, 20],
         	widget_base_dimensions: [600, 80]
     	}).data('gridster').disable();
