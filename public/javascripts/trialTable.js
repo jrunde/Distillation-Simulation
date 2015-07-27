@@ -72,13 +72,11 @@ function trialTable() {
 				trialData[j - 1] = ['Trial ' + j];
             	
 				// Add the component percentages
-				var k = 0;
 				for (var i = 0; i < sampleNames.length; i++) {
 					
-					if (sampleNames[i].toLowerCase() == trials[j].comps[k]) {
-						trialData[j - 1][i + 1] = trials[j].pcts[k] * 100;
-						k++;
-					}
+					var k = trials[j].comps.indexOf(sampleNames[i].toLowerCase());
+					if (k >= 0)
+						trialData[j - 1][i + 1] = Math.round(trials[j].pcts[k] * 100);
 					else trialData[j - 1][i + 1] = 0;
 				}
 				

@@ -63,8 +63,13 @@ function selectionTable() {
 		samples = json.samples;
 		data = [];
 		
+		// Clear the selection table
+		if (table) {
+			table.fnClearTable(true);
+			return;
+		}
+		
 		// Create the selection table
-		if (table) return;
 		table = $('#selected-compounds').dataTable({
             'ordering': true,
             'paging': false,
