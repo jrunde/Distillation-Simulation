@@ -5,7 +5,7 @@ package controllers;
  * added to the corresponding table.
  * 
  */
-public class Component {
+public class Component implements Comparable<Component> {
 
 	// Instantiable variables
 	private String name;
@@ -74,5 +74,17 @@ public class Component {
 	public double getBoilingPoint() {
 		
 		return boilpoint;
+	}
+
+	/**
+	 * Implement the comparable interface for easy sorting.
+	 * 
+	 * @return the result of the comparison.
+	 * 
+	 */
+	@Override
+	public int compareTo(Component that) {
+		
+		return -this.name.compareTo(that.getName());
 	}
 }

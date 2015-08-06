@@ -55,6 +55,11 @@ public class Game {
 		comps = level.getReference().toArray(comps);
 		pcts = level.getRefPercentages().toArray(pcts);
 
+		// TODO: Print the components and percentages (for testing)
+		String msg = "Calculating curve:\n";
+		for (int i = 0; i < pcts.length; i++) msg += "\t" + pcts[i] + "% " + comps[i];
+		Application.log(msg);
+
 		try {
 
 			// Clear the matlab workspace
@@ -107,6 +112,11 @@ public class Game {
 
 		// Convert percentages to decimals
 		for (int i = 0; i < pcts.length; i++) pcts[i] = pcts[i] / 100.0;
+		
+		// TODO: Print the components and percentages (for testing)
+		String msg = "Calculating curve:\n";
+		for (int i = 0; i < pcts.length; i++) msg += "\t" + pcts[i] + "% " + comps[i];
+		Application.log(msg);
 
 		try {
 
@@ -129,7 +139,9 @@ public class Game {
 		catch (MatlabInvocationException e) {
 
 			// On failure, print stack trace
-			e.printStackTrace();
+			//e.printStackTrace();
+			Application.log("ERROR: Matlab exception");
+			return;
 		}
 
 		// Grab the reference curve
@@ -154,7 +166,7 @@ public class Game {
 	 * 
 	 */
 	private Double calcScore(double[] sim, double[] gas) {
-		
+
 		// Find the sum of the differences in curves
 		double sum = 0;
 		for (int i = 0; i < sim.length; i++) sum += Math.abs(sim[i] - gas[i]);

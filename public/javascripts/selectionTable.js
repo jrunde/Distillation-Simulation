@@ -50,6 +50,7 @@ function selectionTable() {
             pcts: percentages
         }
         
+		console.log(inputs);
         return inputs;
     }
 	
