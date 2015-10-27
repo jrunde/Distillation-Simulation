@@ -6,6 +6,24 @@ function trialTable() {
 	
 	var table;
 	var col_size;
+	var info = {
+		matNames: [],
+		sampleNames: [],
+		trialData: [],
+		lowest: 0,
+		ilowest: -1
+	};
+	
+	/**
+ 	 * Removes the table from the viewport.
+ 	 */
+	this.destroy = function() {
+		
+		if (table) {
+			table.fnClearTable(true);
+		 	table.fnDestroy(true);
+		}
+	}
 	
 	/**
  	 * Updates the trial table and its data based on the json received
@@ -14,7 +32,7 @@ function trialTable() {
 	this.update = function(json) {
 		
 		// Parse the json message
-		var info = parse_json(json);
+		parse_json(json);
 		
 		// Create the column array
 		var columns = [{'title': 'Trials'}];
@@ -24,12 +42,17 @@ function trialTable() {
 		
 		// Properly destroy the table
 		if (table) {
-			
+
 			table.fnClearTable(true);
 			table.fnDestroy(false);
 			
 			for (var i = 0; i < columns.length - col_size; i++) {
 				$("#trials thead tr th").eq(i).after('<th></th>');
+			}
+			
+			for (var i = 0; i <  col_size - columns.length; i++) {
+				$('#trials thead').find('tr th:nth-child(' + (columns.length - 1) + ')').each(function(){$(this).remove()});
+				$('#trials tbody').find('tr td:nth-child(' + (columns.length - 1) + ')').each(function(){$(this).remove()});
 			}
 		}
 		
@@ -38,6 +61,8 @@ function trialTable() {
             'ordering': true,
             'paging': false,
             'searching':false,
+			'scrollX': true,
+			'dom': '<"top">rt<"bottom"><"clear">',
             'columns': columns,
 			'data': info.trialData
         });
@@ -52,42 +77,115 @@ function trialTable() {
  	 */
 	function parse_json(json) {
 		
-		var info = {};
 		var trialNum = json.data.length - 1;
         var trials = json.data;
         var samples = json.samples;
 		
 		// Collate the sample names
-        var sampleNames = [];
-        for (var i = 0; i < samples.length; i++) sampleNames[i] = samples[i].name;
-		info.sampleNames = sampleNames
+		if (trialNum == 0) {
+			info = {
+				matNames: [],
+				sampleNames: [],
+				trialData: [],
+				lowest: 0,
+				ilowest: -1
+			};
+		}
+		else if (trialNum == 1) {
+			for (var i = 0; i < trials[trialNum].comps.length; i++) { 
+				
+				info.matNames[i] = trials[trialNum].comps[i];
+				for (var j = 0; j < samples.length; j++) {
+					
+					if (info.matNames[i] == samples[j].matname) {
+						info.sampleNames[i] = samples[j].name;
+						break;
+					}
+				}
+			}
+		}
+		else {
+			for (var i = 0; i < trials[trialNum].comps.length; i++) {
+				
+				var k = info.matNames.indexOf(trials[trialNum].comps[i]);
+				if (k < 0) {
+					
+					for (var j = 0; j < samples.length; j++) {
+						
+						if (trials[trialNum].comps[i] == samples[j].matname) {
+							
+							info.matNames[info.matNames.length] = samples[j].matname;
+							info.sampleNames[info.sampleNames.length] = samples[j].name;
+							
+							for (var l = 0; l < info.trialData.length; l++)
+								info.trialData[l].splice(info.trialData[l].length - 1, 0, 0);
+								
+							break;
+						}
+					}
+				}
+			}
+		}
 		
-		// Collate the trial data
-        if (trialNum > 0) {
-
-            var trialData = [];
-			for (var j = 1; j < trials.length; j++) {
+		// Fill in the trial data
+		if (trialNum > 0) {
+			
+			// If the five slots have not been filled
+			if (trialNum <= 5) {
 				
 				// Add the trial number first
-				trialData[j - 1] = ['Trial ' + j];
-            	
+				info.trialData[trialNum - 1] = ['Trial ' + trialNum];
+				
 				// Add the component percentages
-				for (var i = 0; i < sampleNames.length; i++) {
+				for (var i = 0; i < info.matNames.length; i++) {
 					
-					var k = trials[j].comps.indexOf(sampleNames[i].toLowerCase());
+					var k = trials[trialNum].comps.indexOf(info.matNames[i]);
 					if (k >= 0)
-						trialData[j - 1][i + 1] = Math.round(trials[j].pcts[k] * 100);
-					else trialData[j - 1][i + 1] = 0;
+						info.trialData[trialNum - 1][i + 1] = Math.round(trials[trialNum].pcts[k] * 100);
+					else info.trialData[trialNum - 1][i + 1] = 0;
 				}
 				
 				// Add the score onto the end
-				trialData[j - 1][trialData[j - 1].length] = Math.round(trials[j].score);
+				info.trialData[trialNum - 1][info.trialData[trialNum - 1].length] = 
+					Math.round(trials[trialNum].score);
+				
+				// Update the lowest score pointers
+				if (trialNum == 1 || trials[trialNum].score < info.lowest) {
+					info.lowest = trials[trialNum].score;
+					info.ilowest = trialNum - 1;
+				}
 			}
 		
-			info.trialData = trialData;
-		}	
+			// If the five slots are filled
+			else if (trials[trialNum].score > info.lowest) {
+					
+				// Add the trial number first
+				info.trialData[info.ilowest] = ['Trial ' + trialNum];
+				
+				// Add the component percentages
+				for (var i = 0; i < info.matNames.length; i++) {
+					
+					var k = trials[trialNum].comps.indexOf(info.matNames[i]);
+					if (k >= 0)
+						info.trialData[info.ilowest][i + 1] = Math.round(trials[trialNum].pcts[k] * 100);
+					else info.trialData[info.ilowest][i + 1] = 0;
+				}
+				
+				// Add the score onto the end
+				info.trialData[info.ilowest][info.trialData[info.ilowest].length] = 
+					Math.round(trials[trialNum].score);
+				
+				// Update the lowest score pointers
+				for (var i = 0; i < info.trialData.length; i++) {
+					
+					if (i == 0 || info.trialData[i][info.trialData[i].length - 1] < info.lowest) {
+						info.lowest = info.trialData[i][info.trialData[i].length - 1];
+						info.ilowest = i;
+					}
+				}
+			}
+		}
 		
-		console.log(info);
 		return info;
 	}
 }

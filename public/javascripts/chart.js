@@ -3,7 +3,10 @@
  */
 function chart() {
 	
-	var context = document.getElementById("canvas").getContext("2d");
+	var context = document.getElementById('canvas').getContext("2d");
+	var canvas = document.getElementById('canvas');
+	canvas.style.width = '600px';
+	canvas.style.height = '600px';
 	
 	/**
      * Updates the chart based on the data passed in.
@@ -30,6 +33,17 @@ function chart() {
 				'\"background-color:<%=datasets[i].strokeColor%>\"></span>' +
 				'<%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>'
         });
+		
+		canvas.style.width = '600px';
+		canvas.style.height = '600px';
+	}
+	
+	/**
+     * Removes the chart from the viewport.
+     */
+	this.destroy = function() {
+		
+		canvas.remove();
 	}
 	
 	/**

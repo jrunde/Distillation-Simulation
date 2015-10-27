@@ -2,6 +2,20 @@ ul {
     list-style-type: none;
 }
 
+button { 
+    height: 25px;
+    width: 100px;
+    text-align: center;
+    background-color: #dcdcdc;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius:6px;
+    color: #000;
+    text-decoration: none;
+    cursor: poiner;
+    border: none;
+}
+
 #simulate {
     float: right;
     height: 25px;

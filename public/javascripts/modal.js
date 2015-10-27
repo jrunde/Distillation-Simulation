@@ -5,15 +5,17 @@ function modal(message, buttons, callbacks) {
 	
 	var content = '<p>' + message + '</p>';
 	
+	// Create the button elements for the pop-up window
 	if (buttons) {
 		for (var i = 0; i < buttons.length; i++) {
 		
-			content += '<button id=\"' + buttons[i] + '\" class=\"avgrund-close\">' + buttons[i] + '</button>';
+			content += '<button id=\"' + buttons[i] + '\" class=\"avgrund-close\">' +
+				buttons[i] + '</button>';
 		}
 	}
 	
     // Configure the avgrund modal window layer
-    $('#simulate').avgrund({
+    var obj = $('#simulate').avgrund({
 		height: 200,
 		holderClass: 'custom',
         closeByEscape: false,
@@ -24,6 +26,7 @@ function modal(message, buttons, callbacks) {
     	template: content,
 	});
 	
+	// Create callbacks for the buttons
 	if (buttons) {
 		for (var i = 0; i < buttons.length; i++) {
 		
@@ -31,5 +34,13 @@ function modal(message, buttons, callbacks) {
 				document.getElementById(buttons[i]).addEventListener('click', callbacks[i]);
 			}
 		}
+	}
+	
+	/**
+ 	 * Removes the modal message.
+     */
+	this.destroy = function() {
+            
+		document.body.className = "avgrund-ready";
 	}
 }

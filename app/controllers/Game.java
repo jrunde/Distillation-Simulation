@@ -173,7 +173,7 @@ public class Game {
 
 		// Calculate the score based on the average difference in curves
 		double avg = sum / (double) sim.length;
-		double score = 100.0 - avg;
+		double score = 100.0 - (4 * avg);
 
 		// If the score is so bad that it's negative, just return 0
 		if (score < 0) score = 0;

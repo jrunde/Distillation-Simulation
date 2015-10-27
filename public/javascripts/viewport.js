@@ -8,7 +8,43 @@ function viewport() {
 	var sample_table;
 	var selection_table;
 	var trial_table;
+	var loading;
 	
+	/**
+ 	 * The primary function for viewport management. Updates the
+	 * viewport whenever new information is passed via ajax.
+ 	 */
+	this.update = function(message) {
+		
+		console.log(message);
+		
+		if (loading) loading.destroy();
+		
+		// Check if the game is ending
+		if (message.end_mode) {
+			
+			end(message);
+			return;
+		}
+		
+		// Display the game level
+        document.getElementById('level').innerHTML = 'Level ' + message.level;
+		
+		// Update the viewport elements
+		sample_table.update(message);
+		selection_table.update(message);
+		graph.update(message);
+		
+		// Have the user assess their work
+		if (message.data.length > 1) assess(message);
+		else trial_table.update(message);
+	}
+	
+	/**
+ 	 * Initializes the viewport. This prepares a dummy interface,
+	 * prompts the user with a "Game Loading" message, and sends the
+	 * initial request for the model data.
+ 	 */
 	this.init = function() {
 	
 		// Instantiate all of the viewport elements
@@ -26,41 +62,31 @@ function viewport() {
         	widget_base_dimensions: [600, 80]
     	}).data('gridster').disable();
 		
-		// Configure the run simulation button to make the ajax call
-    	document.getElementById('simulate').addEventListener('click', run);
+		// TODO: real fix is making matlab boot in different thread
+		// Send a dummy update message to initialize the viewport
+		var msg = {
+			level: 1,
+			data: [{
+				num: 0,
+				gas: [0],
+				x_axis: [0],
+			}],
+			samples: [],
+		}
+		
+		this.update(msg);
+		
+		// Put up a loading message
+		loading = new modal('Please wait while your game loads.', [], []);
 		
 		// Trigger the initial viewport update
 		messenger.send('update', {
 			comps: ['none', 'none', 'none', 'none'],
 			pcts: [0, 0, 0, 0]
 		});
-	}
-	
-	/**
- 	 * The primary function for viewport management. Updates the
-	 * viewport whenever new information is passed via ajax.
- 	 */
-	this.update = function(message) {
 		
-		console.log(message);
-		
-		// Check if the game is ending
-		if (message.end_mode) {
-			end(message.end_mode);
-			return;
-		}
-		
-		// Display the game level
-        document.getElementById('level').innerHTML = 'Level ' + message.level;
-		
-		// Update the viewport elements
-		sample_table.update(message);
-		selection_table.update(message);
-		graph.update(message);
-		
-		// Have the user assess their work
-		if (message.data.length > 1) assess(message);
-		else trial_table.update(message);
+		// Configure the run simulation button to make the ajax call
+    	document.getElementById('simulate').addEventListener('click', run);
 	}
 	
 	/**
@@ -117,21 +143,31 @@ function viewport() {
 		
 		var yes = function() {
 			
-			// Advance if level has been completed
+			// Show score in trial table
 			var score = message.data[message.data.length - 1].score;
 			trial_table.update(message);
 			
-			if (score > 95) {
+			// Advance if level has been completed
+			if (score > 80) {
 				
 				// Change button
 				document.getElementById('simulate').innerHTML = 'Next Level';
 				document.getElementById('simulate').removeEventListener('click', run);
 				document.getElementById('simulate').addEventListener('click', advance);
 			}
+			
+			// Reset selections and samples
+			selection_table.reset_selections();
+			sample_table.reset_samples();
 		};
 		
 		var no = function() {
+			
 			trial_table.update(message);
+			
+			// Reset selections and samples
+			selection_table.reset_selections();
+			sample_table.reset_samples();
 		};
 		
 		new modal('Do you think this mixture would make a good drop-in fuel ' + 
@@ -155,16 +191,28 @@ function viewport() {
 	/**
  	 * Ends the game.
  	 */
-	function end(mode) {
+	function end(message) {
 		
-		if (mode == 'complete') {
+		if (message.end_mode == 'complete') {
 			new modal('Congratulations! You completed all of the levels.', ['Ok']);
-		
-			setTimeout(function() {
+			
+			// Destroy all the current tables
+			sample_table.wrapup(message);
+			selection_table.destroy();
+			trial_table.destroy();
+			graph.destroy();
+			
+			// Change button to 'Ok'
+			document.getElementById('simulate').innerHTML = 'Ok';
+			document.getElementById('simulate').removeEventListener('click', run);
+			document.getElementById('simulate').addEventListener('click', function() {
 				messenger.send('quit', null);
-			}, 3000);
+			});
+			
+			// Change level text
+			document.getElementById('level').innerHTML = 'Recap';
 		}
 		
-		else if (mode == 'quit') window.location.href = '/';
+		else if (message.end_mode == 'quit') window.location.href = '/';
 	}
 }

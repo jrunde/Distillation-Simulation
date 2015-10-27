@@ -88,7 +88,6 @@ public class AjaxController {
 		// Check if game is over
 		if (game.isOver()) return end("complete", game);
 		
-		
 		// Parse the request based on user input
 		ArrayList<String> comps = new ArrayList<String>();
 		ArrayList<Double> pcts = new ArrayList<Double>();
@@ -100,9 +99,10 @@ public class AjaxController {
 			Iterator<JsonNode> iter = json.findPath("comps").elements();
 			while (iter.hasNext()) {
 				
-				// Throw out "none" inputs
+				// Throw out "none" and null inputs
 				JsonNode value = iter.next();
-				if (!value.asText().equals("none")) comps.add(value.asText());
+				if (!value.asText().equals("null") && !value.asText().equals("none"))
+					comps.add(value.asText());
 			}
 
 			// Copy the json elements into the percentage array

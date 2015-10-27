@@ -1,30 +1,26 @@
 /**
  * This class represents a form blank.
  */
-function incrementbox(index) {
+function incrementbox(index, val) {
 
 	var box = $('#pct' + index).stepper();
 	var value;
-
+	
+	// Set the box's initial value
+	box[0].value = val;
+	
 	// Set up the box's onchange function
 	box[0].onchange = function() {
 		
-		// Check if more than four components will be used
-		var data = viewport.get_selection_table().get_data();
-		if (data.length >= 4 && !value && parseInt(box.val()) >= 5) {
-			
-			box[0].value = 0;
-			new modal('You may only choose four different ' + 
-				'components for your mixture', ['Ok']);
-			return;
-		}
-		
+		// Get the selection table data
+		var forms = viewport.get_selection_table().get_forms();
+
 		// Check if user percentages will exceed 100
 		var sum = 0;
-		for (var i = 0; i < data.length; i++) {
+		for (var i = 0; i < forms.length; i++) {
 			
-			sum += parseInt(data[i][3]);
-			if (sum >= 100 && parseInt(box.val()) > value) {
+			if (forms[i]) sum += forms[i].get_value();
+			if (sum > 100 && parseInt(box.val()) > value) {
 	
 				box[0].value = value;
 				return;
@@ -35,10 +31,19 @@ function incrementbox(index) {
 		value = parseInt(box.val());
 		if (isNaN(value)) {
 			value = 0;
+			box[0].value = value;
 			return;
 		}
 		
-		// Add the input to the selection table
-		viewport.get_selection_table().add(index, value);
+		// Update percentages array
+		viewport.get_selection_table().update_form(index, value);
+	}
+	
+	/**
+ 	 * Access the value of the increment box.
+ 	 */
+	this.get_value = function() {
+		
+		return parseInt(box.val());
 	}
 }
