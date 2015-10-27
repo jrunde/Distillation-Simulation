@@ -7,6 +7,8 @@ function chart() {
 	var canvas = document.getElementById('canvas');
 	canvas.style.width = '600px';
 	canvas.style.height = '600px';
+	canvas.width = 600;
+	canvas.height = 600;
 	
 	/**
      * Updates the chart based on the data passed in.
@@ -15,6 +17,12 @@ function chart() {
 		
 		// Parse the json message and package data for chartnew
 		var data = parse_json(json);
+		
+		// Make sure canvas doesn't go wonky
+		canvas.style.width = '600px';
+		canvas.style.height = '600px';
+		canvas.width = 600;
+		canvas.height = 600;
 		
 		// Create the chart and render it to HTML
         window.myLine = new Chart(context).Line(data, {
@@ -33,9 +41,6 @@ function chart() {
 				'\"background-color:<%=datasets[i].strokeColor%>\"></span>' +
 				'<%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>'
         });
-		
-		canvas.style.width = '600px';
-		canvas.style.height = '600px';
 	}
 	
 	/**
