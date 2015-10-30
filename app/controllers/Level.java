@@ -12,6 +12,7 @@ public class Level {
 
 	// Instantiable variables
 	private ArrayList<Trial> trials;
+	private ArrayList<ArrayList<Trial>> history; 
 	private LevelData data;
 	
 	/**
@@ -25,6 +26,10 @@ public class Level {
 		// Initialize instantiable variables
 		this.data = data;
 		this.trials = new ArrayList<Trial>();
+		this.history = new ArrayList<ArrayList<Trial>>();
+		
+		// Add a dummy header
+		this.history.add(new ArrayList<Trial>());
 	}
 	
 	/**
@@ -37,7 +42,6 @@ public class Level {
 		
 		return trials;
 	}
-	
 	
 	/**
 	 * Accessor for the level's number, i.e. how far along into the game
@@ -87,6 +91,17 @@ public class Level {
 	}
 	
 	/**
+	 * Accessor for the trial history.
+	 * 
+	 * @return the level history
+	 * 
+	 */
+	public ArrayList<ArrayList<Trial>> getHistory() {
+		
+		return history;
+	}
+	
+	/**
 	 * Adds a new trial to the trial data for the level.
 	 * 
 	 * @param the trial data
@@ -98,5 +113,21 @@ public class Level {
 		
 		// Add the trial data as a new trial
 		trials.add(new Trial(x_axis, y_axis, gas, score, comps, pcts, num));
+		
+		// Add the trial to the level history
+		if (history.size() <= data.getNum()) history.add(trials);
+		else history.set(data.getNum(), trials);
+	}
+	
+	/**
+	 * Switches to a new level.
+	 * 
+	 * @param the trial data
+	 * 
+	 */
+	public void newLevel(LevelData data) {
+		
+		this.data = data;
+		this.trials = new ArrayList<Trial>();
 	}
 }

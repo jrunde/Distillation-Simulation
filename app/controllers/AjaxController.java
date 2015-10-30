@@ -33,18 +33,18 @@ public class AjaxController {
 	 * 
 	 */
 	public ObjectNode handle(JsonNode json, String id) {
-		
+
 		// Block against bad data
 		if (json == null) return null;
 		if (id == null) return null;
 
 		// If this is the first request for this game
 		if (!Application.games.containsKey(id)){
-			
+
 			// Create the game!
 			Application.log("A new game has been created with id: " + id);
 			Application.games.put(id, new Game(id));
-			
+
 			// Log all current games
 			String message = "Games running:\n\tString ID:\t\t\tLast Stamp:\n";
 			Object[] names = Application.games.keySet().toArray();
@@ -54,10 +54,10 @@ public class AjaxController {
 			Application.log(message);
 		}
 		Game game = Application.games.get(id);
-		
+
 		// Time-stamp the handle (for garbage collecting purposes)
 		game.stamp();
-		
+
 		// Create a response object and store the task label
 		ObjectNode response = null;
 		String task = json.findPath("task").asText();
@@ -87,18 +87,18 @@ public class AjaxController {
 
 		// Check if game is over
 		if (game.isOver()) return end("complete", game);
-		
+
 		// Parse the request based on user input
 		ArrayList<String> comps = new ArrayList<String>();
 		ArrayList<Double> pcts = new ArrayList<Double>();
-		
+
 		if (json != null && json.findPath("comps") != null &&
 				json.findPath("pcts") != null) {
 
 			// Copy the json elements into the component list
 			Iterator<JsonNode> iter = json.findPath("comps").elements();
 			while (iter.hasNext()) {
-				
+
 				// Throw out "none" and null inputs
 				JsonNode value = iter.next();
 				if (!value.asText().equals("null") && !value.asText().equals("none"))
@@ -129,7 +129,7 @@ public class AjaxController {
 
 			// Place all the relevant data into an object
 			ObjectNode trial = Json.newObject();
-			
+
 			trial.put("x_axis", Json.toJson(trials.get(i).getX()));
 			trial.put("y_axis", Json.toJson(trials.get(i).getY()));
 			trial.put("gas", Json.toJson(trials.get(i).getGas()));
@@ -141,20 +141,20 @@ public class AjaxController {
 			// Add the object to the data array
 			data.add(trial);
 		}
-		
+
 		// Step through the sample data for the level
 		ArrayList<Component> sampleCmps = 
 				game.getLevel().getComponents();
 		for (int i = 0; i < sampleCmps.size(); i++) {
-			
+
 			// Place all the relevant data into the object
 			ObjectNode sampleCmp = Json.newObject();
-				
+
 			sampleCmp.put("name", sampleCmps.get(i).getName());
 			sampleCmp.put("matname", sampleCmps.get(i).getMatlabName());
 			sampleCmp.put("boilpoint", sampleCmps.get(i).getBoilingPoint());
 			sampleCmp.put("mass", sampleCmps.get(i).getMass());
-			
+
 			// Add the object to the sample component array
 			samples.add(sampleCmp);
 		}
@@ -182,7 +182,7 @@ public class AjaxController {
 		// Update the client side
 		return update(null, game);
 	}
-	
+
 	/**
 	 * Ends the game.
 	 * 
@@ -194,14 +194,47 @@ public class AjaxController {
 	private ObjectNode end(String mode, Game game) {
 
 		// Create the json structures to return the data
+		ArrayList<ArrayList<Trial>> history = game.getLevel().getHistory();
 		ObjectNode response = Json.newObject();
-		
+		ArrayNode data = new ArrayNode(null);
+
 		// If the game is quit, deallocate it's memory
 		if (mode.equalsIgnoreCase("quit")) Application.remove(game.getID());
-	
-		// Add the data and level to the json response
+
+		// Add the end mode to the json response
 		response.put("end_mode", mode);
 
+		// Step through the history
+		for (int i = 1; i < history.size(); i++) {
+
+			// Place all the history data into an object
+			ArrayNode level = new ArrayNode(null);
+			
+			// Step through the trial data
+			ArrayList<Trial> trials = history.get(i);
+			for (int j = 0; j < trials.size(); j++) {
+
+				// Place all the trial data into an object
+				ObjectNode trial = Json.newObject();
+
+				trial.put("x_axis", Json.toJson(trials.get(j).getX()));
+				trial.put("y_axis", Json.toJson(trials.get(j).getY()));
+				trial.put("gas", Json.toJson(trials.get(j).getGas()));
+				trial.put("score", Json.toJson(trials.get(j).getScore()));
+				trial.put("comps", Json.toJson(trials.get(j).getComps()));
+				trial.put("pcts", Json.toJson(trials.get(j).getPcts()));
+				trial.put("num", Json.toJson(j));
+
+				// Add the object to the level array
+				level.add(trial);
+			}
+			
+			// Add the level array to the history array
+			data.add(level);
+		}
+
+		// Put the history into the response and return
+		response.put("history", data);
 		return response;
 	}
 }

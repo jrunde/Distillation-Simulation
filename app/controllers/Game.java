@@ -158,7 +158,6 @@ public class Game {
 	/**
 	 * Calculates the score for a given trial. This might be a temporary method
 	 * to be eliminated once the matlab models are used to generate a score.
-	 * TODO: have the matlab models calculate the score.
 	 * 
 	 * @param the y plot of the distillation curve
 	 * @param the y plot of the gasoline reference curve
@@ -229,7 +228,7 @@ public class Game {
 		else {
 
 			// Create the new level
-			level = new Level(new LevelData(level.getNumber() + 1));
+			level.newLevel(new LevelData(level.getNumber() + 1));
 
 			// Initialize the new level
 			initLevel();
