@@ -1,3 +1,21 @@
+@font-face {
+  	font-family: WEIfont;
+  	src: url(../fonts/Museo_Slab_300.otf)
+}
+
+@font-face {
+  	font-family: WEIfont-bold;
+  	src: url(../fonts/Museo_Slab_700.otf)
+}
+
+p {
+	font-family: WEIfont;
+}
+
+h1 {
+	font-family: WEIfont-bold;
+}
+
 /*
  * Table styles
  */
@@ -13,13 +31,15 @@ table.dataTable {
   /*
    * Body styles
    */
+   font-family: WEIfont;
 }
 table.dataTable thead th,
 table.dataTable tfoot th {
-  font-weight: bold;
+  font-family: WEIfont-bold;
 }
 table.dataTable thead th,
 table.dataTable thead td {
+	font-family: WEIfont-bold;
   padding: 10px 18px;
   border-bottom: 1px solid #111;
 }

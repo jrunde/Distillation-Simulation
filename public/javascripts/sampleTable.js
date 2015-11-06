@@ -6,6 +6,7 @@ function sampleTable() {
 	
 	var table;
 	var added = 0;
+	var history;
 	
 	/**
  	 * Access the data of the sample table.
@@ -46,7 +47,7 @@ function sampleTable() {
 			
 			table.fnAddData(data[i], true);
 	
-			// Configure the run simulation button to make the ajax call
+			// Configure the add buttons to add components to the selection table
     		document.getElementById('add' + i).addEventListener('click', add);
 		}
 	}
@@ -123,35 +124,114 @@ function sampleTable() {
  	 */
 	this.wrapup = function(message) {
 		
+		console.log(message);
+		history = message.history;
 		
 		// Create the column array
-		var columns = [
-			{'title': 'Level'},
-			{'title': 'Number of Trials'},
-			{'title': 'Average Score'},
-		];
+		var data = [];
+		for (var i = 0; i < history.length; i++) {
+			
+			// Put level number
+			data[i] = ['Level ' + (i + 1)];
+			
+			// Put number of trials
+			data[i][1] = history[i].length - 1;
+			
+			// Put average and best scores
+			var sum = 0;
+			var best = 0;
+			for (var j = 1; j < history[i].length; j++) {
+				sum += history[i][j].score;
+				if (history[i][j].score > best) best = history[i][j].score;
+			}
+			data[i][2] = Math.round(sum / data[i][1]);
+			data[i][3] = Math.round(best);
+			data[i][4] = '<button type="button" id="show' + i + '">Show Best</button>';
+		}
+		
+		var last = data.length;
+		data[last] = ['Overall'];
+		
+		for (var i = 1; i < 4; i++) {
+			
+			var sum = 0;
+			for (var j = 0; j < data.length - 1; j++)
+				sum += data[j][i]
+			
+			data[last][i] = Math.round(sum / last);
+		}
+		
+		data[last][4] = '<button type="button" id="show' + last + '">Show Best</button>';
 		
 		// Properly destroy the table
 		if (table) {
 
 			table.fnClearTable(true);
 			table.fnDestroy(false);
-
-			$('#trials thead').find('tr th:nth-child(3)').each(function(){$(this).remove()});
-			$('#trials tbody').find('tr td:nth-child(3)').each(function(){$(this).remove()});
+			
+			$("#sample-compounds thead tr th").eq(0).after('<th></th>');
 		}
-		
-		console.log(message);
-		
+	
 		// Create the new updated table
 		table = $('#sample-compounds').dataTable({
             'paging': false,
             'searching': false,
-			//'scrollCollapse': true,
-			//'scrollY': '250px',
 			'dom': '<"top">rt<"bottom"><"clear">',
-            'columns': columns,
-			'data': [[0, 0, 0]]
+            'columns': [
+				{'title': 'Level'},
+				{'title': 'Number of Trials'},
+				{'title': 'Average Score'},
+				{'title': 'Best Score'},
+				{'title': 'Show Best Graph'}
+			]
         });
+		
+		for (var i = 0; i < data.length; i++) {
+			
+			table.fnAddData(data[i], true);
+	
+			// Configure the add buttons to add components to the selection table
+    		document.getElementById('show' + i).addEventListener('click', show);
+		}
+	}
+	
+	/**
+ 	 * Shows a graph in the chart at screen right.
+ 	 */
+	function show(evt) {
+		
+		var row = evt.target.id.slice(4);
+		var score = table.fnGetData()[row][3];
+		
+		var comps = [];
+		var pcts = [];
+		
+		if (row >= history.length) {
+			
+			var best = 0;
+			for (var i = 0; i < history.length; i++) {
+			
+				if (table.fnGetData()[i][3] > best) {
+					best = table.fnGetData()[i][3];
+					row = i;
+				}
+			}
+		}
+		console.log(row);
+		for (var i = 1; i < history[row].length; i++) {
+			
+			if (Math.round(history[row][i].score) == score) {
+				comps = history[row][i].comps;
+				pcts = history[row][i].pcts;
+			}
+		}
+			
+		console.log(comps);
+		console.log(pcts);
+		
+		messenger.send('update', {
+			comps: comps,
+			pcts: pcts
+		});
 	}
 }

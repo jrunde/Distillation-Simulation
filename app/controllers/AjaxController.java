@@ -86,7 +86,8 @@ public class AjaxController {
 	private ObjectNode update(JsonNode json, Game game) {
 
 		// Check if game is over
-		if (game.isOver()) return end("complete", game);
+		if ((json == null || json.findPath("comps") == null) && game.isOver()) 
+			return end("complete", game);
 
 		// Parse the request based on user input
 		ArrayList<String> comps = new ArrayList<String>();

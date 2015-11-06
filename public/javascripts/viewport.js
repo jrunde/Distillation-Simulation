@@ -9,6 +9,7 @@ function viewport() {
 	var selection_table;
 	var trial_table;
 	var loading;
+	var recap = false;
 	
 	/**
  	 * The primary function for viewport management. Updates the
@@ -23,12 +24,22 @@ function viewport() {
 		// Check if the game is ending
 		if (message.end_mode) {
 			
-			end(message);
-			return;
+			if (!recap) {
+				end(message);
+				return;
+			}
+			
+			else {
+				graph.update(message);
+				return;
+			}
 		}
 		
 		// Display the game level
         document.getElementById('level').innerHTML = 'Level ' + message.level;
+		
+		// Prompt user with beginning question
+		if (message.data.length <= 1) new modal('Pre-Level question would go here.', ['Ok']);
 		
 		// Update the viewport elements
 		sample_table.update(message);
@@ -195,12 +206,12 @@ function viewport() {
 		
 		if (message.end_mode == 'complete') {
 			new modal('Congratulations! You completed all of the levels.', ['Ok']);
+			recap = true;
 			
 			// Destroy all the current tables
 			sample_table.wrapup(message);
 			selection_table.destroy();
 			trial_table.destroy();
-			graph.destroy();
 			
 			// Change button to 'Ok'
 			document.getElementById('simulate').innerHTML = 'Ok';

@@ -1,3 +1,21 @@
+@font-face {
+  	font-family: WEIfont;
+  	src: url(../fonts/Museo_Slab_300.otf)
+}
+
+@font-face {
+  	font-family: WEIfont-bold;
+  	src: url(../fonts/Museo_Slab_700.otf)
+}
+
+p {
+	font-family: WEIfont;
+}
+
+h1 {
+	font-family: WEIfont-bold;
+}
+
 ul {
     list-style-type: none;
 }
@@ -6,6 +24,7 @@ ul {
     float: left;
     height: 50px;
     width: 300px;
+	font-family: WEIfont;
     font-size: 25px;
     text-align: center;
     background-color: #b70101;

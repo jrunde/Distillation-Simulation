@@ -7,10 +7,13 @@ function modal(message, buttons, callbacks) {
 	
 	// Create the button elements for the pop-up window
 	if (buttons) {
+		
+		content += '<br/>';
 		for (var i = 0; i < buttons.length; i++) {
 		
 			content += '<button id=\"' + buttons[i] + '\" class=\"avgrund-close\">' +
 				buttons[i] + '</button>';
+			content += '<div class="divider"/>';
 		}
 	}
 	

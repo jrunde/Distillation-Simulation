@@ -1,3 +1,25 @@
+@font-face {
+  	font-family: WEIfont;
+  	src: url(../fonts/Museo_Slab_300.otf)
+}
+
+@font-face {
+  	font-family: WEIfont-bold;
+  	src: url(../fonts/Museo_Slab_700.otf)
+}
+
+p {
+	font-family: WEIfont;
+}
+
+h1 {
+	font-family: WEIfont-bold;
+}
+
+canvas {
+	font-family: WEIfont;
+}
+
 ul {
     list-style-type: none;
 }
@@ -6,6 +28,7 @@ button {
     height: 25px;
     width: 100px;
     text-align: center;
+	font-family: WEIfont;
     background-color: #dcdcdc;
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
@@ -20,6 +43,7 @@ button {
     float: right;
     height: 25px;
     width: 100px;
+	font-family: WEIfont;
     text-align: center;
     background-color: #b70101;
     -moz-border-radius: 5px;

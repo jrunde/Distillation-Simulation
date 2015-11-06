@@ -15,7 +15,6 @@ html, body {
 	left: 50%;
 	z-index: 1000;
 	box-shadow: 0 1px 10px 0 rgba(0, 0, 0, .5);
-
 	-webkit-transform: scale(0.8);
 	-moz-transform: scale(0.8);
 	-ms-transform: scale(0.8);
@@ -43,7 +42,7 @@ body.avgrund-ready,
 	-ms-transform-origin: 50% 50%;
 	-o-transform-origin: 50% 50%;
 	transform-origin: 50% 50%;
-
+	text-align: center;
 	-webkit-transition: 0.3s all ease-out;
 	-moz-transition: 0.3s all ease-out;
 	-ms-transition: 0.3s all ease-out;
@@ -58,6 +57,7 @@ body.avgrund-active {
 	-o-transform: scale(0.9);
 	transform: scale(0.9);
 	overflow: hidden;
+	text-align: center;
 }
 
 .avgrund-active .avgrund-popin {
@@ -116,4 +116,10 @@ body.avgrund-active {
     text-decoration: none;
     cursor: poiner;
     border: none;
+}
+
+.divider{
+    width: 25px;
+    height: auto;
+    display: inline-block;
 }
