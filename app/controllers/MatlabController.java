@@ -106,7 +106,7 @@ public class MatlabController {
 	public void clear() throws MatlabInvocationException {
 
 		// Clear the matlab workspace
-		proxy.eval("clear all");
+		proxy.eval("clear");
 		proxy.eval("close all");
 	}
 	

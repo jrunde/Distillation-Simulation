@@ -1,12 +1,17 @@
 function [gamma] = UNIFAC(T,x,mixture_params,Unifac_GC)
 %This function calculates the unifac coefficients for any compounds
 %Written by Jacob Backhaus
+%Modified 11/25/2015 to allow ideal liquid/ideal vapor calcs.
 %   T is the temperature [K]
 %   x is the mole fraction of each component
 %   mixture_params contains all of the groups, number of groups, needed to
 %   solve UNIFAC for the activity coefficients
 %   Unifac_GC contains all of the interaction parameters, group volume, and
 %   group surface area for each group
+%   ideal = 0 -> use non-ideal liquid behavior in calculations
+%   ideal = 1 -> use ideal liquid and vapor behavior in calculations 
+
+ideal=1; 
 
 %Unbundle unifac components
 Unifac_interaction=Unifac_GC{3};    %unifac interaction parameters
@@ -56,6 +61,12 @@ end
 
 lngamma=lngammar+lngammac; %natural log of total activity coefficients
 gamma=exp(lngamma); %total activity coefficient
+
+if ideal==1 
+    for i=1:n_cmpts
+        gamma(i) = 1;
+    end
+end
 
 end
 
