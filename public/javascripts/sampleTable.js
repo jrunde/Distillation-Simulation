@@ -155,10 +155,15 @@ function sampleTable() {
 		for (var i = 1; i < 4; i++) {
 			
 			var sum = 0;
-			for (var j = 0; j < data.length - 1; j++)
+			var best = 0;
+			for (var j = 0; j < data.length - 1; j++) {
 				sum += data[j][i]
+				if (data[j][i] > best) best = data[j][i];
+			}
 			
-			data[last][i] = Math.round(sum / last);
+			if (i == 1) data [last][i] = sum;
+			else if (i == 2) data[last][i] = Math.round(sum / last);
+			else data[last][i] = best;
 		}
 		
 		data[last][4] = '<button type="button" id="show' + last + '">Show Best</button>';
@@ -217,21 +222,24 @@ function sampleTable() {
 				}
 			}
 		}
-		console.log(row);
+		
 		for (var i = 1; i < history[row].length; i++) {
 			
 			if (Math.round(history[row][i].score) == score) {
 				comps = history[row][i].comps;
-				pcts = history[row][i].pcts;
+				pcts = history[row][i].pcts; 
 			}
 		}
-			
-		console.log(comps);
-		console.log(pcts);
+		
+		// Hacky fix to multiply by 100...
+		if (pcts[0] <= 1)
+			for (var i = 0; i < pcts.length; i++) pcts[i] = pcts[i] * 100;
 		
 		messenger.send('update', {
 			comps: comps,
 			pcts: pcts
 		});
+		
+		viewport.get_graph().show_target(history[row][0].gas);
 	}
 }

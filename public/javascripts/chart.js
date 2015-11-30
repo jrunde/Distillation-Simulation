@@ -3,6 +3,7 @@
  */
 function chart() {
 	
+	var target;
 	var context = document.getElementById('canvas').getContext("2d");
 	var canvas = document.getElementById('canvas');
 	canvas.style.width = '600px';
@@ -36,10 +37,6 @@ function chart() {
             scaleSteps: 20,
             scaleStepWidth: 10,
             scaleStartValue: 250,
-            /*legendTemplate: '<ul class="<%=name.toLowerCase()%>-legend">' + 
-				'<% for (var i=0; i<datasets.length; i++){%><li><span style=' + 
-				'"background-color:<%=datasets[i].strokeColor%>"></span>' +
-				'<%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>'*/
         });
 	}
 	
@@ -49,6 +46,14 @@ function chart() {
 	this.destroy = function() {
 		
 		canvas.remove();
+	}
+	
+	/**
+     * Sets the target reference curve.
+     */
+	this.show_target = function(reference) {
+		
+		target = reference;
 	}
 	
 	/**
@@ -62,6 +67,9 @@ function chart() {
         var trials = json.data;
 		
 		// Generate the reference curve line data
+		var data;
+		if (target == null) data = trials[trialNum].gas;
+		else data = target;
         var lineData = [
             {
                 label: "Reference Mixture",
@@ -71,7 +79,7 @@ function chart() {
                 pointStrokeColor: "#fff",
                 pointHighlightFill: "#fff",
                 pointHighlightStroke: "rgba(220,220,220,1)",
-                data: trials[trialNum].gas,
+                data: data,
                 title: "Gasoline",
             }
         ];

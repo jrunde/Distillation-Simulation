@@ -24,15 +24,14 @@ function viewport() {
 		// Check if the game is ending
 		if (message.end_mode) {
 			
-			if (!recap) {
-				end(message);
-				return;
-			}
+			end(message);
+			return;
+		}
 			
-			else {
-				graph.update(message);
-				return;
-			}
+		if (recap) {
+				
+			graph.update(message);
+			return;
 		}
 		
 		// Display the game level
@@ -103,7 +102,7 @@ function viewport() {
 	/**
  	 * Accessor for graph.
  	 */
-	this.graph = function() {
+	this.get_graph = function() {
 		
 		return graph;
 	}
