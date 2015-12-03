@@ -8,8 +8,9 @@
         <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/dataTables.css")">
         <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/gridster.css")">
         <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/avgrund.css")">
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/stepper.css")">
         <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/landing.css")">
-        <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/uw-logo.png")">
+        <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/glbrc-logo.png")">
         
         <!-- Embedded Javascript Router -->
         @helper.javascriptRouter("jsRoutes")(
@@ -21,14 +22,18 @@
     <body>
         <div class="gridster">
             <ul>
-                <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
-                    <img id="logo" src="@routes.Assets.at("images/uw-logo.jpg")" Hspace="30px" align="left"/>
-                    <h1>Finding the Fuel That Fits</h1>
+                <li data-row="1" data-col="1" data-sizex="2" data-sizey="1">
+                    <img id="logo" src="@routes.Assets.at("images/glbrc-logo.jpg")" align="left"/>
+                	<h1>FINDING THE FUEL THAT FITS</h1>
                 </li>
                 <li data-row="2" data-col="1" data-sizex="1" data-sizey="1">
+                	<p>Number of Levels:</p>
                 </li>
-                <li data-row="3" data-col="1" data-sizex="1" data-sizey="1">
-                    <button type="button" id="play">Play</button>
+                <li data-row="2" data-col="2" data-sizex="1" data-sizey="1">
+                	<form><input type="number" id="levels" value="4" min="1" max="4" step="1" readonly></form>
+                </li>
+                <li data-row="3" data-col="1" data-sizex="2" data-sizey="1">
+                    <div class="full-width"><button type="button" id="play">Play</button></div>
                 </li>
             </ul>
     </body>

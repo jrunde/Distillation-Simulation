@@ -238,7 +238,7 @@ function sampleTable() {
 		messenger.send('update', {
 			comps: comps,
 			pcts: pcts
-		});
+		}, viewport.update);
 		
 		viewport.get_graph().show_target(history[row][0].gas);
 	}

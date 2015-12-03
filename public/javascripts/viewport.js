@@ -10,6 +10,7 @@ function viewport() {
 	var trial_table;
 	var loading;
 	var recap = false;
+	var me = this;
 	
 	/**
  	 * The primary function for viewport management. Updates the
@@ -69,7 +70,7 @@ function viewport() {
         	autogrow_cols: true,
 			max_cols: 2,
         	widget_margins: [20, 20],
-        	widget_base_dimensions: [600, 80]
+        	widget_base_dimensions: [600, 90]
     	}).data('gridster').disable();
 		
 		// TODO: real fix is making matlab boot in different thread
@@ -93,7 +94,7 @@ function viewport() {
 		messenger.send('update', {
 			comps: ['none', 'none', 'none', 'none'],
 			pcts: [0, 0, 0, 0]
-		});
+		}, this.update);
 		
 		// Configure the run simulation button to make the ajax call
     	document.getElementById('simulate').addEventListener('click', run);
@@ -136,12 +137,9 @@ function viewport() {
 	 * to send to the Java side.
  	 */
 	function run(){
-            
+        
     	var inputs = selection_table.get_inputs(true);
-    	if (inputs) {
-            
-    		messenger.send('update', inputs);
-   		}
+    	if (inputs) messenger.send('update', inputs, me.update);
     }
 	
 	/**
@@ -190,7 +188,7 @@ function viewport() {
  	 */
 	function advance() {
 		
-		messenger.send('advance', null);
+		messenger.send('advance', null, me.update);
 		
 		// Change button back
 		document.getElementById('simulate').innerHTML = 'Run';
@@ -216,7 +214,7 @@ function viewport() {
 			document.getElementById('simulate').innerHTML = 'Ok';
 			document.getElementById('simulate').removeEventListener('click', run);
 			document.getElementById('simulate').addEventListener('click', function() {
-				messenger.send('quit', null);
+				messenger.send('quit', null, me.update);
 			});
 			
 			// Change level text

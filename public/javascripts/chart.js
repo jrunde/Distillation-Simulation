@@ -89,12 +89,12 @@ function chart() {
             // Fill the user distillation curve into the line data
             lineData[1] = {
                 label: "Your Mixture",
-                fillColor: "rgba(183,1,1,0)",
-                strokeColor: "rgba(183,1,1,1)",
-                pointColor: "rgba(183,1,1,1)",
+                fillColor: "rgba(39,96,146,0)",
+                strokeColor: "rgba(39,96,146,1)",
+                pointColor: "rgba(39,96,146,1)",
                 pointStrokeColor: "#fff",
                 pointHighlightFill: "#fff",
-                pointHighlightStroke: "rgba(183,1,1,1)",
+                pointHighlightStroke: "rgba(39,96,146,1)",
                 data: trials[trialNum].y_axis,
                 title: "Your Mixture"
             };

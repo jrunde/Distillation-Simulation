@@ -2,16 +2,17 @@
  * This class handles all of the ajax messaging to and from the
  * Java application.
  */
-function messenger(viewport) {
+function messenger(id) {
 	
-	var hashcode = makeid();
+	var hashcode = id;
+	if (id == null) hashcode = makeid();
 	
 	/**
      * Makes an ajax call.
      *
      */
-    this.send = function(task, components) {
-        
+    this.send = function(task, components, callback) {
+		
         var ajaxCallBack = {
             method: "POST",
             contentType: "application/json; charset=utf-8",
@@ -20,7 +21,7 @@ function messenger(viewport) {
                 task: task,
                 inputs: components,
             }),
-            success: viewport.update,
+            success: callback,
             error: onError
         }
  
@@ -50,5 +51,14 @@ function messenger(viewport) {
         	text += possible.charAt(Math.floor(Math.random() * possible.length));
 
     	return text;
+	}
+	
+	/**
+     * Returns the messenger's unique ID.
+     *
+     */
+	function getid() {
+		
+		return hashcode;
 	}
 }

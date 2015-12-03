@@ -1,41 +1,57 @@
 @font-face {
-  	font-family: WEIfont;
-  	src: url(../fonts/Museo_Slab_300.otf)
+  	font-family: Caslon;
+  	src: url(../fonts/ACaslonPro-Regular.otf)
 }
 
 @font-face {
-  	font-family: WEIfont-bold;
-  	src: url(../fonts/Museo_Slab_700.otf)
+  	font-family: Caslon-Bold;
+  	src: url(../fonts/ACaslonPro-Bold.otf)
+}
+
+@font-face {
+  	font-family: Myriad;
+  	src: url(../fonts/MyriadPro-Cond.otf)
+}
+
+@font-face {
+  	font-family: Myriad-Bold;
+  	src: url(../fonts/MyriadPro-SemiboldCond.otf)
 }
 
 p {
-	font-family: WEIfont;
+	font-family: Caslon;
+	font-size: 16px;
 }
 
 h1 {
-	font-family: WEIfont-bold;
+	font-family: Myriad-Bold;
+	font-size: 50px;
 }
 
-canvas {
-	font-family: WEIfont;
+h2 {
+	font-family: Caslon-Bold;
 }
 
 ul {
     list-style-type: none;
 }
 
+img {
+	margin: 0px 15px 0px 0px;
+}
+
 button { 
     height: 25px;
     width: 100px;
     text-align: center;
-	font-family: WEIfont;
+	font-family: Caslon;
+	font-size: 16px;
     background-color: #dcdcdc;
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
     border-radius:6px;
     color: #000;
     text-decoration: none;
-    cursor: poiner;
     border: none;
 }
 
@@ -43,14 +59,14 @@ button {
     float: right;
     height: 25px;
     width: 100px;
-	font-family: WEIfont;
+	font-family: Caslon;
+	font-size: 16px;
     text-align: center;
-    background-color: #b70101;
+    background-color: #276092;
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
     border-radius:6px;
     color: #fff;
     text-decoration: none;
-    cursor: poiner;
     border: none;
 }

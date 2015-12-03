@@ -10,10 +10,8 @@ import matlabcontrol.MatlabInvocationException;
  */
 public class Game {
 
-	// Game constants
-	public static final int LAST_LEVEL = 4;
-
 	// Instantiable variables
+	private int LAST_LEVEL;
 	private MatlabController mat;
 	private Level level;
 	private boolean isOver;
@@ -28,6 +26,7 @@ public class Game {
 	public Game(String ID) {
 
 		// Initialize the instantiable variables
+		LAST_LEVEL = 4;
 		mat = new MatlabController();
 		level = new Level(new LevelData(1));
 		isOver = false;
@@ -80,8 +79,9 @@ public class Game {
 
 		catch (MatlabInvocationException e) {
 
-			// On failure, print stack trace
-			e.printStackTrace();
+			// Print a matlab exception error
+			Application.log("ERROR: Matlab exception");
+			return;
 		}
 
 		// Store the data as the zeroth trial
@@ -115,7 +115,7 @@ public class Game {
 		
 		// TODO: Print the components and percentages (for testing)
 		String msg = "Calculating curve:\n";
-		for (int i = 0; i < pcts.length; i++) msg += "\t" + pcts[i] + "% " + comps[i];
+		for (int i = 0; i < pcts.length; i++) msg += "\t" + (pcts[i] * 100) + "% " + comps[i];
 		Application.log(msg);
 
 		try {
@@ -138,8 +138,7 @@ public class Game {
 
 		catch (MatlabInvocationException e) {
 
-			// On failure, print stack trace
-			//e.printStackTrace();
+			// Print a matlab exception error
 			Application.log("ERROR: Matlab exception");
 			return;
 		}
@@ -180,6 +179,21 @@ public class Game {
 		return score;
 	}
 
+	/**
+	 * Mutator for the last level of the game.
+	 * 
+	 * @param the number of levels the game should have.
+	 * 
+	 */
+	public void setLastLevel(int levels) {
+
+		// Block bad data
+		if (levels > 4) levels = 4;
+		else if (levels < 1) levels = 1;
+		
+		this.LAST_LEVEL = levels;
+	}
+	
 	/**
 	 * Accessor for the game's identification code.
 	 * 

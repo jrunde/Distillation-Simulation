@@ -4,107 +4,79 @@
  * main.scala.html.
  *
  */
+  
+var viewport;
+var messenger;
+
 require.config({
+	shim: {
+		'stepper': {
+			deps: ['jquery'],
+			exports: 'stepper'
+		},
+	},
     paths: {
+	    'jquery': '//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js',
+		'form': '/assets/javascripts/plugins/form',
         'datatables': '/assets/javascripts/plugins/dataTables',
         'gridster': '/assets/javascripts/plugins/gridster',
         'gridster-collision': '/assets/javascripts/plugins/collision',
         'gridster-draggable': '/assets/javascripts/plugins/draggable',
         'gridster-coords': '/assets/javascripts/plugins/coords',
         'gridster-utils': '/assets/javascripts/plugins/utils',
-        'avgrund': '/assets/javascripts/plugins/avgrund'
-    }
+		'avgrund': '/assets/javascripts/plugins/avgrund',
+		'chartnew': '/assets/javascripts/plugins/chartnew.js',
+		'stepper': '/assets/javascripts/plugins/stepper',
+    },
 });
 
-require(['/assets/javascripts/plugins/chartnew.js',
+require([
+		'/assets/javascripts/viewport.js',
+		'/assets/javascripts/messenger.js',
+		'/assets/javascripts/modal.js',
+		'/assets/javascripts/chart.js',
+		'/assets/javascripts/trialTable.js',
+		'/assets/javascripts/sampleTable.js',
+		'/assets/javascripts/selectionTable.js',
+		'/assets/javascripts/incrementbox.js',
         '/assets/javascripts/plugins/json.js',
+		'/assets/javascripts/plugins/chartnew.js',
+		'form',
         'datatables',
         'gridster',
         'gridster-collision',
         'gridster-draggable',
         'gridster-coords',
         'gridster-utils',
-        'avgrund'
-    ], function(){
-    
-    /**
-     * Makes an ajax call.
-     *
-     */
-    var ajaxCall = function(components) {
-        
-        var ajaxCallBack = {
-            method: "POST",
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            data: JSON.stringify(components),
-            success: update,
-            error: onError
-        }
- 
-        jsRoutes.controllers.Application.ajaxCall().ajax(ajaxCallBack);
-    };
- 
-    /**
-     * Handles an ajax error.
-     *
-     */
-    var onError = function(error) {
-        console.log("Error");
-        console.log(error);
-    }
-    
-    /**
-     * Handles an ajax error.
-     *
-     */
-    var avgrund = function(message) {
-        
-        // Configure the avgrund modal window layer
-        $('#simulate').avgrund({
-			height: 200,
-			holderClass: 'custom',
-			showClose: true,
-            showCloseText: 'Close',
-            closeByEscape: true,
-            closeByDocument: true,
-			enableStackAnimation: true,
-			onBlurContainer: '.container',
-            openOnEvent: false,
-            template: message
-		});
-    }
-    
-    /**
-     * Document on ready function. This is essentially the main function
-     * for the java script code.
-     *
-     */
-    $(function() {
-      
-        launch();
-    });
-    
-    /**
-     * Launches the viewport.
-     *
-     */
-    function launch() {
-        
-        // Configure the run simulation button to make the ajax call
-        document.getElementById('play').addEventListener('click', function(){
+		'avgrund',
+		'stepper',
+    ], function() {
+	
+	messenger = new messenger();
+    var box = $('#levels').stepper();
+	console.log(box);
+	
+	// Configure the run simulation button to make the ajax call
+    document.getElementById('play').addEventListener('click', function(){
             
-            //ajaxCall();
-                
-            // Redirect to the application
-            window.location.assign('./play');
-        });
-        
-        // Configure the layout grid
-        $('.gridster ul').gridster({
-            autogrow_cols: true,
-            widget_margins: [20, 20],
-            widget_base_dimensions: [600, 100]
-        }).data('gridster').disable();
-    }
+		// Test var
+		var levels = parseInt(box.val());
+		var success = function(msg) {
+				
+			// Redirect to the application
+            window.location.assign('./play?' + msg.id);
+		}
+            
+		// Trigger the initial viewport update
+		messenger.send('set_levels', {
+			levels: levels
+		}, success);
+    });
+	
+    // Configure the layout grid
+    $('.gridster ul').gridster({
+        autogrow_cols: true,
+        widget_margins: [20, 20],
+        widget_base_dimensions: [300, 100]
+    }).data('gridster').disable();
 });

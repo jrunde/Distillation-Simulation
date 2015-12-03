@@ -54,9 +54,9 @@ require([
     ], function() {
 	
 	// Instantiate the viewport and the ajax messenger
-	viewport = new viewport();
-	messenger = new messenger(this.viewport);
+	if (location.search === "") messenger = new messenger();
+	else messenger = new messenger(location.search.substring(1));
 	
-	// Boot up the viewport
-	viewport.init(this.messenger);
+	viewport = new viewport();
+	viewport.init();
 });

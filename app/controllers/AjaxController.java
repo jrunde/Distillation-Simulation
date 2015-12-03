@@ -62,14 +62,32 @@ public class AjaxController {
 		ObjectNode response = null;
 		String task = json.findPath("task").asText();
 
-		// Execute the method cooresponding to the task label
+		// Execute the method corresponding to the task label
 		if (task.equalsIgnoreCase("update")) 
 			response = update(json.findPath("inputs"), game);
+		else if (task.equals("set_levels")) response = setLevels(json.findPath("levels"), game);
 		else if (task.equalsIgnoreCase("advance")) response = advance(game);
 		else if (task.equalsIgnoreCase("quit")) response = end("quit", game);
 		else return null;
 
 		// Return the json response
+		return response;
+	}
+	
+	/**
+	 * Sets the number of levels for the game.
+	 * 
+	 * @param the game in question
+	 * 
+	 */
+	private ObjectNode setLevels(JsonNode levels, Game game) {
+	
+		// Set the number of levels for the game
+		game.setLastLevel(levels.asInt());
+		
+		ObjectNode response = Json.newObject();
+		response.put("id", game.getID());
+		
 		return response;
 	}
 
