@@ -1,4 +1,9 @@
-	.stepper { border-radius: 3px; margin: 0 0 10px 0; overflow: hidden; position: relative; width: 100px;}
+@font-face {
+  	font-family: Caslon;
+  	src: url(../fonts/ACaslonPro-Regular.otf)
+}
+	
+	.stepper { border-radius: 3px; margin: 0 0 10px 0; overflow: hidden; position: relative; width: 100px; font-family: Caslon;}
 	.stepper .stepper-input { background: #F9F9F9; border: 1px solid #ccc; border-radius: 3px; color: #333; 
 		font-size: 13px; line-height: 1.2; margin: 0; overflow: hidden; padding: 9px 10px 10px; width: 100%; 
 		z-index: 49; -moz-appearance: textfield;
