@@ -22,7 +22,7 @@ public class MatlabController {
 
 		// Create a proxy factory with specified options
 		options = new MatlabProxyFactoryOptions.Builder()
-		//.setHidden(true)
+		.setHidden(true)
 		//.setProxyTimeout(30000L)
 		.build();
 		factory = new MatlabProxyFactory(options);
