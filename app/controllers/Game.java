@@ -64,17 +64,28 @@ public class Game {
 			// Clear the matlab workspace
 			mat.clear();
 
-			// Pass in the user input
-			mat.set("n", comps.length);
-			mat.set("cmp", comps);
-			mat.set("pct", pcts);
+			if (level.getNumber() < 4) {
+				
+				// Pass in the user input
+				mat.set("n", comps.length);
+				mat.set("cmp", comps);
+				mat.set("pct", pcts);
 
-			// Run the script
-			mat.runModels();
+				// Run the script
+				mat.runModels();
 
-			// Store the outputs
-			recovered = mat.get("recovered");
-			t1 = mat.get("T1");
+				// Store the outputs
+				recovered = mat.get("recovered");
+				t1 = mat.get("T1");
+			}
+			
+			else {
+				
+				// Run the script
+				mat.runModels();
+				t1 = mat.get(comps[0]);
+				recovered = new double[] {0,5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,99};
+			}
 		} 
 
 		catch (MatlabInvocationException e) {
