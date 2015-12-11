@@ -20,7 +20,7 @@
 
 p {
 	font-family: Caslon;
-	font-size: 20px;
+	font-size: 16px;
 }
 
 figcaption {
@@ -43,7 +43,7 @@ h3 {
 	text-align: center;
 	margin-top: 50px;
 	font-family: Caslon-Bold;
-	font-size: 20px;
+	font-size: 16px;
 }
 
 ul {
@@ -56,12 +56,12 @@ img {
 }
 
 table {
-	font-size: 20px;
+	font-size: 16px;
 	margin: 40px 20px 20px 20px;
 }
 
 table#options {
-	margin-top: 20px;
+	margin-top: 16px;
 	margin-left: 175px;
 }
 
@@ -112,7 +112,7 @@ td {
 
 .option {
 	font-family: Caslon;
-	font-size: 20px;
+	font-size: 16px;
 	text-align: right;
 	padding-right: 30px;
 	padding-bottom: 25px;

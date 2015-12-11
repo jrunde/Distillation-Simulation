@@ -39,7 +39,7 @@ function viewport() {
         document.getElementById('level').innerHTML = 'Level ' + message.level;
 		
 		// Prompt user with beginning question
-		if (message.data.length <= 1) new modal('Pre-Level question would go here.', ['Ok']);
+		if (message.data.length <= 1) pose_question(message);
 		
 		// Update the viewport elements
 		sample_table.update(message);
@@ -222,5 +222,26 @@ function viewport() {
 		}
 		
 		else if (message.end_mode == 'quit') window.location.href = '/';
+	}
+	
+	/**
+ 	 * Prompts the user with a pre-level question.
+ 	 */
+	function pose_question(message) {
+		
+		var question;
+		if (message.level == 1) {
+			question = '<h2>Answer the question below on paper.</h2><br/><p>Based ' +
+				'on the distillation curve what is the likely boiling point of ' +
+				'this fuel? Explain your reasoning.</p>';
+		}
+		
+		else {
+			question = '<h2>Answer the question below on paper.</h2><br/><p>Based ' +
+				'on this distillation curve, how many components are likely in ' +
+				'the fuel mixture? Explain your reasoning.</p>';
+		}
+		
+		new modal(question, ['Done']);
 	}
 }
