@@ -58,7 +58,19 @@ require([
 	
 	// Configure the run simulation button to make the ajax call
     document.getElementById('play').addEventListener('click', function(){
-            
+        
+		// Put up a loading message
+    	var obj = $('#play').avgrund({
+			height: 200,
+			holderClass: 'Landing',
+        	closeByEscape: false,
+        	closeByDocument: false,
+			enableStackAnimation: true,
+			onBlurContainer: '.container',
+        	openOnEvent: false,
+    		template: '<p>Please wait while your game loads.</p>',
+		});
+		
 		// Test var
 		var levels = parseInt(box.val());
 		var success = function(msg) {

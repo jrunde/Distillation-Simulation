@@ -4,9 +4,9 @@ html, body {
 }
 
 .avgrund-popin {
-	position: fixed;
-    top: 600px;
-    left: 400px;
+	position: absolute;
+    top: 50%;
+    left: 35%;
 	background: #fff;
 	padding: 10px;
 	overflow: hidden;
@@ -20,6 +20,12 @@ html, body {
 	-ms-transform: scale(0.8);
 	-o-transform: scale(0.8);
 	transform: scale(0.8);
+}
+
+.avgrund-popin.Landing.stack {
+	position: absolute;
+    top: 2200px;
+    left: 50%;
 }
 
 .avgrund-overlay {

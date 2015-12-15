@@ -72,7 +72,7 @@ function chart() {
 		else data = target;
         var lineData = [
             {
-                label: "Reference Mixture",
+                label: "Reference Fossil Fuel",
                 fillColor: "rgba(220,220,220,0)",
                 strokeColor: "rgba(220,220,220,1)",
                 pointColor: "rgba(220,220,220,1)",
@@ -88,7 +88,7 @@ function chart() {
         
             // Fill the user distillation curve into the line data
             lineData[1] = {
-                label: "Your Mixture",
+                label: "Your Biofuel Mixture",
                 fillColor: "rgba(39,96,146,0)",
                 strokeColor: "rgba(39,96,146,1)",
                 pointColor: "rgba(39,96,146,1)",

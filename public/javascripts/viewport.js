@@ -80,7 +80,7 @@ function viewport() {
 			data: [{
 				num: 0,
 				gas: [0],
-				x_axis: [0],
+				x_axis: [0,5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,99],
 			}],
 			samples: [],
 		}
@@ -234,6 +234,13 @@ function viewport() {
 			question = '<h2>Answer the question below on paper.</h2><br/><p>Based ' +
 				'on the distillation curve what is the likely boiling point of ' +
 				'this fuel? Explain your reasoning.</p>';
+		}
+		
+		else if (message.level == 4) {
+			
+			question = '<h2>Way to go on passing levels 1-3!</h2><br/>Now see if you ' +
+				'can design a biofuel mixture to match the curve for actual gasoline ' +
+				'using up to 4 components!</p>';
 		}
 		
 		else {

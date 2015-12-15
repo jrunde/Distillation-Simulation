@@ -135,6 +135,7 @@ public class LevelData {
 		case 3:
 
 			// Choose components
+			int three = rand.nextInt(2);
 			comp1 = rand.nextInt(3);
 			comp2 = rand.nextInt(3) + 6;
 			int comp3 = rand.nextInt(3) + 13;
@@ -142,15 +143,16 @@ public class LevelData {
 			// Add them to the reference curve
 			reference.add(BANK.get(comp1).getMatlabName());
 			reference.add(BANK.get(comp2).getMatlabName());
-			reference.add(BANK.get(comp3).getMatlabName());
+			if (three == 1) reference.add(BANK.get(comp3).getMatlabName());
 
 			// Choose percentages
 			a = rand.nextDouble() * 0.3 + .2;
-			double b = rand.nextDouble() * 0.1 + .2;
+			double b = 0.0;
+			if (three == 1) b = rand.nextDouble() * 0.1 + .2;
 
 			// Add them to the reference curve
 			percentages.add(a);
-			percentages.add(b);
+			if (three == 1) percentages.add(b);
 			percentages.add(1.0 - a - b);
 
 			// Add the sample component data
