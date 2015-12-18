@@ -68,7 +68,7 @@ require([
 			enableStackAnimation: true,
 			onBlurContainer: '.container',
         	openOnEvent: false,
-    		template: '<p>Please wait while your game loads.</p>',
+    		template: '<h3>Just one moment.</h3><br/><p>Please wait while your game loads.</p>',
 		});
 		
 		// Test var

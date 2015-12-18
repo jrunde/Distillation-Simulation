@@ -24,7 +24,7 @@ html, body {
 
 .avgrund-popin.Landing.stack {
 	position: absolute;
-    top: 2200px;
+    top: 1800px;
     left: 50%;
 }
 
@@ -111,6 +111,20 @@ body.avgrund-active {
 
 /* Optional close button styles */
 .avgrund-close {
+    height: 25px;
+    width: 100px;
+    text-align: center;
+    background-color: #276092;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius:6px;
+    color: #fff;
+    text-decoration: none;
+    cursor: poiner;
+    border: none;
+}
+
+.unclosable {
     height: 25px;
     width: 100px;
     text-align: center;

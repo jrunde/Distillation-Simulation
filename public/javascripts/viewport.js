@@ -41,6 +41,9 @@ function viewport() {
 		// Prompt user with beginning question
 		if (message.data.length <= 1) pose_question(message);
 		
+		// Enable run button
+		document.getElementById('simulate').disabled = false;
+		
 		// Update the viewport elements
 		sample_table.update(message);
 		selection_table.update(message);
@@ -58,6 +61,9 @@ function viewport() {
  	 */
 	this.init = function() {
 	
+		// Disable run button to begin
+		document.getElementById('simulate').disabled = true;
+		
 		// Instantiate all of the viewport elements
 		graph = new chart();
 		sample_table = new sampleTable();
@@ -88,7 +94,8 @@ function viewport() {
 		this.update(msg);
 		
 		// Put up a loading message
-		loading = new modal('Please wait while your game loads.', [], []);
+		loading = new modal('<h2>Just one moment.</h2><br><p>Please wait while ' + 
+			'your game loads.</p>', [], []);
 		
 		// Trigger the initial viewport update
 		messenger.send('update', {
@@ -138,48 +145,37 @@ function viewport() {
  	 */
 	function run(){
         
+		document.getElementById('simulate').disabled = true;
     	var inputs = selection_table.get_inputs(true);
     	if (inputs) messenger.send('update', inputs, me.update);
     }
 	
 	/**
- 	 * The user assessment mode of the gameflow. Here the user is given the
-	 * chance to state if they think their fuel is a good replacement for the
-	 * target curve.
+ 	 * Assesses whether the player has passed the level. If they have, they are
+	 * prompted with a window to continue onto the next level.
  	 */
 	function assess(message) {
-		
-		var yes = function() {
 			
-			// Show score in trial table
-			var score = message.data[message.data.length - 1].score;
-			trial_table.update(message);
+		// Update the viewport
+		var score = message.data[message.data.length - 1].score;
+		trial_table.update(message);
+		selection_table.reset_selections();
+		sample_table.reset_samples();
 			
-			// Advance if level has been completed
-			if (score > 80) {
+		// Advance if level has been completed
+		if (score > 80) {
 				
-				// Change button
-				document.getElementById('simulate').innerHTML = 'Next Level';
-				document.getElementById('simulate').removeEventListener('click', run);
-				document.getElementById('simulate').addEventListener('click', advance);
-			}
-			
-			// Reset selections and samples
-			selection_table.reset_selections();
-			sample_table.reset_samples();
-		};
+			// Prompt user that they've completed the level
+			new modal('<h2>Congratulations!</h2><br/><p>You passed the level. Are you ' +
+				'ready to continue?</p>', ['Continue'], [advance], message.level > 3);
+		}
 		
-		var no = function() {
+		else if (message.data.length > 5) {
 			
-			trial_table.update(message);
-			
-			// Reset selections and samples
-			selection_table.reset_selections();
-			sample_table.reset_samples();
-		};
-		
-		new modal('Do you think this mixture would make a good drop-in fuel ' + 
-			'for the target mixture?', ['Yes', 'No'], [yes, no]);
+			// Prompt user that they've completed the level
+			new modal('<h2>Keep trying?</h2><br/><p>Would you like to attempt this level ' +
+				'again or skip it?</p>', ['Try Again', 'Skip It'], [null, advance], message.level > 3);
+		}
 	}
 	
 	/**
@@ -189,11 +185,6 @@ function viewport() {
 	function advance() {
 		
 		messenger.send('advance', null, me.update);
-		
-		// Change button back
-		document.getElementById('simulate').innerHTML = 'Run';
-		document.getElementById('simulate').removeEventListener('click', advance);
-		document.getElementById('simulate').addEventListener('click', run);
 	}
 	
 	/**
@@ -202,7 +193,9 @@ function viewport() {
 	function end(message) {
 		
 		if (message.end_mode == 'complete') {
-			new modal('Congratulations! You completed all of the levels.', ['Ok']);
+			
+			new modal('<h2>Congratulations!</h2><br><p>You completed all of the ' +
+				'levels.</p>', ['Continue']);
 			recap = true;
 			
 			// Destroy all the current tables
@@ -210,8 +203,8 @@ function viewport() {
 			selection_table.destroy();
 			trial_table.destroy();
 			
-			// Change button to 'Ok'
-			document.getElementById('simulate').innerHTML = 'Ok';
+			// Change button to 'Exit'
+			document.getElementById('simulate').innerHTML = 'Exit';
 			document.getElementById('simulate').removeEventListener('click', run);
 			document.getElementById('simulate').addEventListener('click', function() {
 				messenger.send('quit', null, me.update);
@@ -231,24 +224,25 @@ function viewport() {
 		
 		var question;
 		if (message.level == 1) {
-			question = '<h2>Answer the question below on paper.</h2><br/><p>Based ' +
+			question = '<h2>Answer the question below on paper.</h2><br><p>Based ' +
 				'on the distillation curve what is the likely boiling point of ' +
 				'this fuel? Explain your reasoning.</p>';
 		}
 		
 		else if (message.level == 4) {
-			
-			question = '<h2>Way to go on passing levels 1-3!</h2><br/>Now see if you ' +
+			question = '<h2>Way to go on passing levels 1-3!</h2><br>Now see if you ' +
 				'can design a biofuel mixture to match the curve for actual gasoline ' +
 				'using up to 4 components!</p>';
+			
 		}
 		
 		else {
-			question = '<h2>Answer the question below on paper.</h2><br/><p>Based ' +
+			question = '<h2>Answer the question below on paper.</h2><br><p>Based ' +
 				'on this distillation curve, how many components are likely in ' +
 				'the fuel mixture? Explain your reasoning.</p>';
 		}
 		
-		new modal(question, ['Done']);
+		new modal(question, ['Done'], []);
+		
 	}
 }
