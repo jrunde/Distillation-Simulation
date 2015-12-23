@@ -94,8 +94,10 @@ function viewport() {
 		this.update(msg);
 		
 		// Put up a loading message
-		loading = new modal('<h2>Just one moment.</h2><br><p>Please wait while ' + 
-			'your game loads.</p>', [], []);
+		if (location.search.substring(1).length == 0) {
+			loading = new modal('<h2>Just one moment.</h2><br><p>Please wait while ' + 
+				'your game loads.</p>', [], []);
+		}
 		
 		// Trigger the initial viewport update
 		messenger.send('update', {
@@ -221,6 +223,10 @@ function viewport() {
  	 * Prompts the user with a pre-level question.
  	 */
 	function pose_question(message) {
+		
+		// Block against poor message timing
+		if (message.data.length > 1) return;
+		if (message.data[0].gas.length < 21) return;
 		
 		var question;
 		if (message.level == 1) {

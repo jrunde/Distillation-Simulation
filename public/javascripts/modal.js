@@ -73,12 +73,13 @@ function modal(message, buttons, callbacks, unclosable) {
      */
 	this.destroy = function() {
 		
-		document.body.className = "avgrund-ready";
 		modals = document.getElementsByClassName('custom');
 		
 		for (var i = 0; i < modals.length; i++) {
 			var text = modals.item(i).innerHTML.toString();
 			if (text.indexOf(message) > -1) modals.item(i).remove();
 		}
+		
+		document.body.className = "avgrund-ready";
 	}
 }

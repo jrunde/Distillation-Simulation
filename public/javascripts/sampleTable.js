@@ -146,7 +146,7 @@ function sampleTable() {
 			}
 			data[i][2] = Math.round(sum / data[i][1]);
 			data[i][3] = Math.round(best);
-			data[i][4] = '<button type="button" id="show' + i + '">Show Best</button>';
+			data[i][4] = '<button type="button" id="show' + i + '">View Best</button>';
 		}
 		
 		var last = data.length;
@@ -166,7 +166,7 @@ function sampleTable() {
 			else data[last][i] = best;
 		}
 		
-		data[last][4] = '<button type="button" id="show' + last + '">Show Best</button>';
+		data[last][4] = '<button type="button" id="show' + last + '">View Best</button>';
 		
 		// Properly destroy the table
 		if (table) {
@@ -187,7 +187,7 @@ function sampleTable() {
 				{'title': 'Number of Trials'},
 				{'title': 'Average Score'},
 				{'title': 'Best Score'},
-				{'title': 'Show Best Graph'}
+				{'title': 'View Best Trial'}
 			]
         });
 		
