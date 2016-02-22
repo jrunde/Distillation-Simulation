@@ -12,6 +12,7 @@ public class Game {
 
 	// Instantiable variables
 	private int LAST_LEVEL;
+	private boolean matlabOn;
 	private MatlabController mat;
 	private Level level;
 	private boolean isOver;
@@ -27,7 +28,8 @@ public class Game {
 
 		// Initialize the instantiable variables
 		LAST_LEVEL = 4;
-		mat = new MatlabController();
+		//mat = new MatlabController();
+		matlabOn = false;
 		level = new Level(new LevelData(1));
 		isOver = false;
 		id = ID;
@@ -48,51 +50,65 @@ public class Game {
 		Object recovered = null;
 		Object t1 = null;
 
-		// Refactor the user input data
-		String[] comps = new String[level.getReference().size()];
-		Double[] pcts = new Double[level.getRefPercentages().size()];
-		comps = level.getReference().toArray(comps);
-		pcts = level.getRefPercentages().toArray(pcts);
+		// Use Matlab models
+		if (matlabOn) {
 
-		// TODO: Print the components and percentages (for testing)
-		String msg = "Calculating curve:\n";
-		for (int i = 0; i < pcts.length; i++) msg += "\t" + pcts[i] + "% " + comps[i];
-		Application.log(msg);
+			// Refactor the user input data
+			String[] comps = new String[level.getReference().size()];
+			Double[] pcts = new Double[level.getRefPercentages().size()];
+			comps = level.getReference().toArray(comps);
+			pcts = level.getRefPercentages().toArray(pcts);
 
-		try {
+			// TODO: Print the components and percentages (for testing)
+			String msg = "Calculating curve:\n";
+			for (int i = 0; i < pcts.length; i++) msg += "\t" + pcts[i] + "% " + comps[i];
+			Application.log(msg);
 
-			// Clear the matlab workspace
-			mat.clear();
+			try {
 
-			if (level.getNumber() < 4) {
-				
-				// Pass in the user input
-				mat.set("n", comps.length);
-				mat.set("cmp", comps);
-				mat.set("pct", pcts);
+				// Clear the matlab workspace
+				mat.clear();
 
-				// Run the script
-				mat.runModels();
+				if (level.getNumber() < 4) {
 
-				// Store the outputs
-				recovered = mat.get("recovered");
-				t1 = mat.get("T1");
+					// Pass in the user input
+					mat.set("n", comps.length);
+					mat.set("cmp", comps);
+					mat.set("pct", pcts);
+
+					// Run the script
+					mat.runModels();
+
+					// Store the outputs
+					recovered = mat.get("recovered");
+					t1 = mat.get("T1");
+				}
+
+				else {
+
+					// Run the script
+					mat.runModels();
+					t1 = mat.get(comps[0]);
+					recovered = new double[] {0,5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,99};
+				}
+			} 
+
+			catch (MatlabInvocationException e) {
+
+				// Print a matlab exception error
+				Application.log("ERROR: Matlab exception");
+				return;
 			}
+		}
+
+		// Use java models
+		else {
+
+			// Fill the x values
+			recovered = new double[] {0,5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100};
 			
-			else {
-				
-				// Run the script
-				mat.runModels();
-				t1 = mat.get(comps[0]);
-				recovered = new double[] {0,5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,99};
-			}
-		} 
-
-		catch (MatlabInvocationException e) {
-
-			// Print a matlab exception error
-			Application.log("ERROR: Matlab exception");
-			return;
+			// Fill in the y values
+			t1 = drawCurve(level.getReference(), level.getRefPercentages(), level.getComponents());
 		}
 
 		// Store the data as the zeroth trial
@@ -122,36 +138,53 @@ public class Game {
 		pcts = percentages.toArray(pcts);
 
 		// Convert percentages to decimals
-		for (int i = 0; i < pcts.length; i++) pcts[i] = pcts[i] / 100.0;
+		for (int i = 0; i < pcts.length; i++) {
+			percentages.set(i, percentages.get(i) / 100.0);
+			pcts[i] = pcts[i] / 100.0;
+		}
 		
-		// TODO: Print the components and percentages (for testing)
-		String msg = "Calculating curve:\n";
-		for (int i = 0; i < pcts.length; i++) msg += "\t" + (pcts[i] * 100) + "% " + comps[i];
-		Application.log(msg);
+		// Use Matlab models
+		if (matlabOn) {
+			
+			// TODO: Print the components and percentages (for testing)
+			String msg = "Calculating curve:\n";
+			for (int i = 0; i < pcts.length; i++) msg += "\t" + (pcts[i] * 100) + "% " + comps[i];
+			Application.log(msg);
 
-		try {
+			try {
 
-			// Clear the matlab workspace
-			mat.clear();
+				// Clear the matlab workspace
+				mat.clear();
 
-			// Pass in the user input
-			mat.set("n", comps.length);
-			mat.set("cmp", comps);
-			mat.set("pct", pcts);
+				// Pass in the user input
+				mat.set("n", comps.length);
+				mat.set("cmp", comps);
+				mat.set("pct", pcts);
 
-			// Run the script
-			mat.runModels();
+				// Run the script
+				mat.runModels();
 
-			// Store the outputs
-			recovered = mat.get("recovered");
-			t1 = mat.get("T1");
-		} 
+				// Store the outputs
+				recovered = mat.get("recovered");
+				t1 = mat.get("T1");
+			} 
 
-		catch (MatlabInvocationException e) {
+			catch (MatlabInvocationException e) {
 
-			// Print a matlab exception error
-			Application.log("ERROR: Matlab exception");
-			return;
+				// Print a matlab exception error
+				Application.log("ERROR: Matlab exception");
+				return;
+			}
+		}
+
+		// Use java models
+		else {
+
+			// Fill the x values
+			recovered = new double[] {0,5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100};
+
+			// Fill in the y values
+			t1 = drawCurve(components, percentages, level.getComponents());
 		}
 
 		// Grab the reference curve
@@ -165,6 +198,91 @@ public class Game {
 				ref, (Double) score, comps, pcts, trialNum);
 	}
 
+	/**
+	 * Draws an artificial curve given the trial data. This method also has to spend time sorting the
+	 * components, percentages, and boiling points beforehand.
+	 * 
+	 * @param the components of the mixture
+	 * @param the percentages of each component
+	 * @param the component info
+	 * @return a curve
+	 * 
+	 */
+	private double[] drawCurve(ArrayList<String> comps, ArrayList<Double> pcts, ArrayList<Component> info) {
+		
+		// Add the boiling points to an array
+		ArrayList<Double> bps = new ArrayList<Double>();
+		for (int c = 0; c < comps.size(); c++) {
+			
+			if (bps.size() >= comps.size()) break;
+			for (int i = 0; i < info.size(); i++) {
+				
+				if (comps.get(c).equals(info.get(i).getMatlabName())) {
+					bps.add((Double) info.get(i).getBoilingPoint());
+				}
+			}
+		}
+		
+		// Sort boiling points
+		ArrayList<Double> bpsort = new ArrayList<Double>(bps);
+		bpsort.sort(null);
+		
+		// Fill in the curve array
+		int pos = 0;
+		double last = 293.0;
+		double[] curve = new double[21];
+		if (!bpsort.isEmpty() && bpsort.get(0) < last) last = bpsort.get(0);
+		for (int i = 0; i < bpsort.size(); i++) {
+			
+			// Determine next boiling point to work from
+			int b;
+			for (b = 0; b < bps.size(); b++) {
+				
+				if (bpsort.get(i) == bps.get(b)) break;
+			}
+			
+			// Draw actual curve
+			int j;
+			for (j = 0; j <= 5 * Math.round((double) pcts.get(b) * 20); j += 5) {
+
+				// Case 1: on intersection
+				if (j == 0) {
+					curve[(pos + j) / 5] = (last + (double) bps.get(b)) / 2.0;
+					last = (last + (double) bps.get(b)) / 2.0;
+				}
+				
+				// Case 2: 5 past intersection
+				else if (j == 5) {
+					curve[(pos + j) / 5] = last + ((double) bps.get(b) - last) * .75;
+					last = (double) bps.get(b);
+				}
+				
+				// Case 3: 5 before intersection
+				else if (5 * Math.round((double) pcts.get(b) * 20) - 5 == j && b + 1 < bps.size()) {
+					double next = (double) bps.get(b + 1);
+					curve[(pos + j) / 5] = (double) bps.get(b) + (next - (double) bps.get(b)) / 8.0;
+				}
+				
+				else curve[(pos + j) / 5] = (double) bps.get(b);
+			}
+				
+			pos += j - 5;
+			
+			Application.log(5 * Math.round((double) pcts.get(b) * 20) + "% " + comps.get(b) + " @ " + (double) bps.get(b));
+		}
+		//if (curve[20] == 0) curve[20] = curve[19];
+		
+		// Handle the gasoline case
+		if (comps.get(0).equals("T_EEE")) {
+			
+			curve = new double[] {0,329.05,335.45,341.15,346.85,353.75,
+					360.25,367.75,375.05,380.95,385.55,388.75,391.25,393.85,
+					396.65,400.15,405.25,414.15,429.55,446.15,457.27};
+		}
+		
+		return curve;
+	}
+	
 	/**
 	 * Calculates the score for a given trial. This might be a temporary method
 	 * to be eliminated once the matlab models are used to generate a score.
@@ -201,10 +319,21 @@ public class Game {
 		// Block bad data
 		if (levels > 4) levels = 4;
 		else if (levels < 1) levels = 1;
-		
+
 		this.LAST_LEVEL = levels;
 	}
-	
+
+	/**
+	 * Mutator for using matlab models.
+	 * 
+	 */
+	public void turnMatlabOn() {
+
+		if (matlabOn) return;
+		mat = new MatlabController();
+		this.matlabOn = true;
+	}
+
 	/**
 	 * Accessor for the game's identification code.
 	 * 
@@ -236,6 +365,17 @@ public class Game {
 	public boolean isOver() {
 
 		return this.isOver;
+	}
+
+	/**
+	 * Accessor for if the game uses matlab models.
+	 * 
+	 * @return if matlab is currently being used
+	 * 
+	 */
+	public boolean isMatlabOn() {
+
+		return this.matlabOn;
 	}
 
 	/**

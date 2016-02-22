@@ -1,7 +1,7 @@
 /**
  * This class creates a modal messaging layer for the client display.
  */
-function modal(message, buttons, callbacks, unclosable) {
+function modal(message, buttons, callbacks, closable) {
 	
 	var me = this;
 	var content = '<p>' + message + '</p>';
@@ -14,8 +14,8 @@ function modal(message, buttons, callbacks, unclosable) {
 		for (var i = 0; i < buttons.length; i++) {
 		
 			content += '<button id=\"' + buttons[i] + '\" ';
-			if (!unclosable) content += 'class=\"avgrund-close\"';
-			else content += 'class=\"unclosable\"';
+			if (!closable || !closable[i]) content += 'class=\"unclosable\"';
+			else content += 'class=\"avgrund-close\"';
 			content += '>' + buttons[i] + '</button> <div class="divider"/>';
 		}
 	}
@@ -27,36 +27,16 @@ function modal(message, buttons, callbacks, unclosable) {
 	}
 	
     // Configure the avgrund modal window layer
-	if (message.substring(4, 7) === 'Way') {
-		
-		// Probably the hackiest thing I've ever coded...
-		// Needs to be revisited.
-		setTimeout(function() {
-			obj = $('#simulate').avgrund({
-				height: 200,
-				holderClass: 'custom',
-        		closeByEscape: false,
-        		closeByDocument: false,
-				enableStackAnimation: true,
-				onBlurContainer: '.container',
-        		openOnEvent: false,
-    			template: content,
-			});
-		}, 2000);
-	}
-    
-	else {
-		obj = $('#simulate').avgrund({
-			height: 200,
-			holderClass: 'custom',
-        	closeByEscape: false,
-        	closeByDocument: false,
-			enableStackAnimation: true,
-			onBlurContainer: '.container',
-        	openOnEvent: false,
-    		template: content,
-		});
-	}
+	obj = $('#simulate').avgrund({
+		height: 200,
+		holderClass: 'custom',
+        closeByEscape: false,
+        closeByDocument: false,
+		enableStackAnimation: true,
+		onBlurContainer: '.container',
+        openOnEvent: false,
+    	template: content,
+	});
 	
 	// Create callbacks for the buttons
 	if (buttons) {

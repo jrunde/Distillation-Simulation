@@ -25,6 +25,16 @@ function trialTable() {
 	}
 	
 	/**
+ 	 * Resets the table data.
+ 	 */
+	this.clear = function() {
+		
+		info.matNames = [];
+		info.sampleNames = [];
+		info.trialData = [];
+	}
+	
+	/**
  	 * Updates the trial table and its data based on the json received
 	 * from the controllers and models.
  	 */

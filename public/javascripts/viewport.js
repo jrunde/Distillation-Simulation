@@ -96,7 +96,7 @@ function viewport() {
 		// Put up a loading message
 		if (location.search.substring(1).length == 0) {
 			loading = new modal('<h2>Just one moment.</h2><br><p>Please wait while ' + 
-				'your game loads.</p>', [], []);
+				'your game loads.</p>', [], [], []);
 		}
 		
 		// Trigger the initial viewport update
@@ -169,14 +169,14 @@ function viewport() {
 				
 			// Prompt user that they've completed the level
 			new modal('<h2>Congratulations!</h2><br/><p>You passed the level. Are you ' +
-				'ready to continue?</p>', ['Continue'], [advance], message.level > 3);
+				'ready to continue?</p>', ['Continue'], [advance], [false]);
 		}
 		
 		else if (message.data.length > 5) {
 			
 			// Prompt user that they've completed the level
 			new modal('<h2>Keep trying?</h2><br/><p>Would you like to attempt this level ' +
-				'again or skip it?</p>', ['Try Again', 'Skip It'], [null, advance], message.level > 3);
+				'again or skip it?</p>', ['Try Again', 'Skip It'], [null, advance], [true, false]);
 		}
 	}
 	
@@ -187,6 +187,7 @@ function viewport() {
 	function advance() {
 		
 		messenger.send('advance', null, me.update);
+		trial_table.clear();
 	}
 	
 	/**
@@ -197,7 +198,7 @@ function viewport() {
 		if (message.end_mode == 'complete') {
 			
 			new modal('<h2>Congratulations!</h2><br><p>You completed all of the ' +
-				'levels.</p>', ['Continue']);
+				'levels.</p>', ['Continue'], [], [true]);
 			recap = true;
 			
 			// Destroy all the current tables
@@ -248,7 +249,7 @@ function viewport() {
 				'the fuel mixture? Explain your reasoning.</p>';
 		}
 		
-		new modal(question, ['Done'], []);
+		new modal(question, ['Done'], [], [true]);
 		
 	}
 }
