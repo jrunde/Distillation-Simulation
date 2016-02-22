@@ -34,7 +34,7 @@ function selectionTable() {
 			if (percentages[i]) sum += percentages[i];
         
 		if (sum != 100) {
-			new modal('Your percentages do not add up to 100%.', ['Ok'], [], [true]);
+			new modal('<h2>Whoops!</h2><br><p>Your percentages do not add up to 100%.</p>', ['Ok'], [], [true]);
             return;
 		}
 		

@@ -258,8 +258,16 @@ public class Game {
 				}
 				
 				// Case 3: 5 before intersection
-				else if (5 * Math.round((double) pcts.get(b) * 20) - 5 == j && b + 1 < bps.size()) {
-					double next = (double) bps.get(b + 1);
+				else if (5 * Math.round((double) pcts.get(b) * 20) - 5 == j && i + 1 < bpsort.size()) {
+					
+					// Determine next boiling point to work from
+					int c;
+					for (c = 0; c < bps.size(); c++) {
+						
+						if (bpsort.get(i + 1) == bps.get(c)) break;
+					}
+					
+					double next = (double) bps.get(c);
 					curve[(pos + j) / 5] = (double) bps.get(b) + (next - (double) bps.get(b)) / 8.0;
 				}
 				
@@ -270,12 +278,11 @@ public class Game {
 			
 			Application.log(5 * Math.round((double) pcts.get(b) * 20) + "% " + comps.get(b) + " @ " + (double) bps.get(b));
 		}
-		//if (curve[20] == 0) curve[20] = curve[19];
 		
 		// Handle the gasoline case
 		if (comps.get(0).equals("T_EEE")) {
 			
-			curve = new double[] {0,329.05,335.45,341.15,346.85,353.75,
+			curve = new double[] {311,329.05,335.45,341.15,346.85,353.75,
 					360.25,367.75,375.05,380.95,385.55,388.75,391.25,393.85,
 					396.65,400.15,405.25,414.15,429.55,446.15,457.27};
 		}

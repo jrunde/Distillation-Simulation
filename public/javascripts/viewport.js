@@ -148,8 +148,9 @@ function viewport() {
 	function run(){
         
 		document.getElementById('simulate').disabled = true;
-    	var inputs = selection_table.get_inputs(true);
+    	var inputs = selection_table.get_inputs();
     	if (inputs) messenger.send('update', inputs, me.update);
+		else document.getElementById('simulate').disabled = false;
     }
 	
 	/**
