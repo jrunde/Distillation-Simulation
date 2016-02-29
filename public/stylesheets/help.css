@@ -1,0 +1,120 @@
+@font-face {
+  	font-family: Caslon;
+  	src: url(../fonts/ACaslonPro-Regular.otf)
+}
+
+@font-face {
+  	font-family: Caslon-Bold;
+  	src: url(../fonts/ACaslonPro-Bold.otf)
+}
+
+@font-face {
+  	font-family: Myriad;
+  	src: url(../fonts/MyriadPro-Cond.otf)
+}
+
+@font-face {
+  	font-family: Myriad-Bold;
+  	src: url(../fonts/MyriadPro-SemiboldCond.otf)
+}
+
+p {
+	font-family: Caslon;
+	font-size: 16px;
+}
+
+figcaption {
+	margin-bottom: 20px;
+	font-family: Caslon-Bold;
+	font-size: 14px;
+}
+
+h1 {
+	font-family: Myriad-Bold;
+	font-size: 50px;
+}
+
+h2 {
+	font-family: Myriad;
+	font-size: 30px;
+}
+
+h3 {
+	text-align: center;
+	margin-top: 50px;
+	font-family: Caslon-Bold;
+	font-size: 16px;
+}
+
+ul {
+    list-style-type: none;
+}
+
+img {
+	margin: 10px;
+	width: 600px;
+}
+
+table {
+	font-size: 16px;
+	margin: 40px 20px 20px 20px;
+}
+
+table#options {
+	margin-top: 16px;
+	margin-left: 175px;
+}
+
+thead {
+	font-family: Caslon-Bold;
+	text-align: center;
+}
+
+tbody {
+	font-family: Caslon;
+}
+
+td {
+	padding: 5px;
+}
+
+.col1 {
+	padding-right: 30px;
+	text-align: center;
+	vertical-align: top;
+}
+
+#play {
+	margin-top: 40px;
+    height: 50px;
+    width: 300px;
+	font-family: Caslon;
+    font-size: 25px;
+    text-align: center;
+    background-color: #276092;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius:6px;
+    color: #fff;
+    text-decoration: none;
+    border:none;
+}
+
+#logo {
+    height: 80px;
+	margin: 0px 15px 0px 0px;
+	width: auto;
+}
+
+.full-width {
+	text-align: center;
+}
+
+.option {
+	font-family: Caslon;
+	font-size: 16px;
+	text-align: right;
+	padding-right: 30px;
+	padding-bottom: 25px;
+	vertical-align: middle;
+}

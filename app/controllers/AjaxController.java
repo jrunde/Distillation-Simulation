@@ -65,7 +65,8 @@ public class AjaxController {
 		// Execute the method corresponding to the task label
 		if (task.equalsIgnoreCase("update")) 
 			response = update(json.findPath("inputs"), game);
-		else if (task.equals("set_levels")) response = setLevels(json.findPath("levels"), game);
+		else if (task.equals("set_levels")) 
+			response = setLevels(json.findPath("levels"), json.findPath("matlab"), game);
 		else if (task.equalsIgnoreCase("advance")) response = advance(game);
 		else if (task.equalsIgnoreCase("quit")) response = end("quit", game);
 		else return null;
@@ -80,11 +81,15 @@ public class AjaxController {
 	 * @param the game in question
 	 * 
 	 */
-	private ObjectNode setLevels(JsonNode levels, Game game) {
+	private ObjectNode setLevels(JsonNode levels, JsonNode matlab, Game game) {
 	
+		// Set whether to use matlab or not
+		if (matlab.asBoolean()) game.turnMatlabOn();
+		
 		// Set the number of levels for the game
 		game.setLastLevel(levels.asInt());
 		
+		// Pass back a response with game ID
 		ObjectNode response = Json.newObject();
 		response.put("id", game.getID());
 		

@@ -1,0 +1,37 @@
+@(title: String)(content: Html)
+
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>@title</title>
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/dataTables.css")">
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/gridster.css")">
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/avgrund.css")">
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/stepper.css")">
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/bootstrap-switch.css")">
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/bootstrap.min.css")">
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/highlight.css")">
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/landing.css")">
+        <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/glbrc-logo.png")">
+        
+        <!-- Embedded Javascript Router -->
+        @helper.javascriptRouter("jsRoutes")(
+            routes.javascript.Application.index,
+            routes.javascript.Application.ajaxCall
+        )
+        
+    </head>
+    <body>
+        <div class="gridster">
+            <ul>
+                <li data-row="1" data-col="1" data-sizex="2" data-sizey="17">
+                    <img id="logo" src="@routes.Assets.at("images/glbrc-logo.jpg")" align="left"/>
+                	<h1>FINDING THE FUEL THAT FITS</h1>
+                    <h2>Help Pages</h2>
+                    <p>Content to be added.</p>
+                </li>
+            </ul>
+         </div>
+    </body>
+</html>

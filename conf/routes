@@ -7,6 +7,8 @@ GET     /                           		controllers.Application.landing()
 
 GET	/play					controllers.Application.index()
 
+GET     /help					controllers.Application.help()
+
 # Javascript routing
 POST     /assets/javascripts/routes/:id		controllers.Application.ajaxCall(id: String)
 

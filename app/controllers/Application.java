@@ -25,7 +25,7 @@ public class Application extends Controller {
 	/**
 	 * Triggers the landing page.
 	 * 
-	 * @return the result of trying to render index
+	 * @return the result of trying to render landing
 	 */
 	public static Result landing() {
 
@@ -36,6 +36,17 @@ public class Application extends Controller {
 		return ok(landing.render());
 	}
 
+	/**
+	 * Triggers the help page.
+	 * 
+	 * @return the result of trying to render help
+	 */
+	public static Result help() {
+		
+		// Render the index with a simple message
+		return ok(help.render());
+	}
+	
 	/**
 	 * Triggers the index home page.
 	 * 

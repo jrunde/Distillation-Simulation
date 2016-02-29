@@ -28,15 +28,11 @@ public class Game {
 
 		// Initialize the instantiable variables
 		LAST_LEVEL = 4;
-		//mat = new MatlabController();
 		matlabOn = false;
 		level = new Level(new LevelData(1));
 		isOver = false;
 		id = ID;
 		stamp = (new Date().getTime()) / 1000;
-
-		// Initialize the new level
-		initLevel();
 	}
 
 	/**
@@ -49,7 +45,8 @@ public class Game {
 
 		Object recovered = null;
 		Object t1 = null;
-
+		
+		Application.log("Matlab on?: " + matlabOn);
 		// Use Matlab models
 		if (matlabOn) {
 
@@ -316,7 +313,8 @@ public class Game {
 	}
 
 	/**
-	 * Mutator for the last level of the game.
+	 * Mutator for the last level of the game. Also initializes the first
+	 * level of the game. Should not be called more than once.
 	 * 
 	 * @param the number of levels the game should have.
 	 * 
@@ -328,6 +326,9 @@ public class Game {
 		else if (levels < 1) levels = 1;
 
 		this.LAST_LEVEL = levels;
+		
+		// Initialize the new level
+		initLevel();
 	}
 
 	/**
@@ -337,8 +338,8 @@ public class Game {
 	public void turnMatlabOn() {
 
 		if (matlabOn) return;
+		matlabOn = true;
 		mat = new MatlabController();
-		this.matlabOn = true;
 	}
 
 	/**

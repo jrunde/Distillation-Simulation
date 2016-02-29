@@ -62,46 +62,6 @@ require([
 		'highlight',
     ], function() {
 	
-	messenger = new messenger();
-    var box = $('#levels').stepper();
-	var boot = $("[name='matlab']").bootstrapSwitch({
-		state: 'true',
-		size: 'normal',
-		onText: 'On',
-		offText: 'Off'
-	});
-	
-	// Configure the run simulation button to make the ajax call
-    document.getElementById('play').addEventListener('click', function(){
-        
-		// Put up a loading message
-    	var obj = $('#play').avgrund({
-			height: 200,
-			holderClass: 'Landing',
-        	closeByEscape: false,
-        	closeByDocument: false,
-			enableStackAnimation: true,
-			onBlurContainer: '.container',
-        	openOnEvent: false,
-    		template: '<h3>Just one moment.</h3><br/><p>Please wait while your game loads.</p>',
-		});
-		
-		// Test var
-		var levels = parseInt(box.val());
-		var matlab = !boot.bootstrapSwitch('state');
-		var success = function(msg) {
-				
-			// Redirect to the application
-            window.location.assign('./play?' + msg.id);
-		}
-            
-		// Trigger the initial viewport update
-		messenger.send('set_levels', {
-			levels: levels,
-			matlab: matlab,
-		}, success);
-    });
-	
     // Configure the layout grid
     $('.gridster ul').gridster({
         autogrow_cols: true,
